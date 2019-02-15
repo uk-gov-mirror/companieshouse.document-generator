@@ -8,6 +8,11 @@ artifactory_publish := $(shell if [[ -n "$(tag)" ]]; then echo release; else ech
 .PHONY: all
 all: build
 
+.PHONY: submodules
+submodules:
+	git submodule init
+	git submodule update
+
 .PHONY: clean
 clean:
 	mvn clean
@@ -16,7 +21,7 @@ clean:
 	rm -rf ./build-*
 
 .PHONY: build
-build:
+build: submodules
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
 	mvn package -DskipTests=true
 	mv ./$(artifact_core_name)/target/$(artifact_core_name)-$(version).jar ./$(artifact_name).jar
@@ -34,6 +39,9 @@ package:
 	$(eval tmpdir:=$(shell mktemp -d build-XXXXXXXXXX))
 	cp ./$(artifact_name).jar $(tmpdir)
 	cp ./start.sh $(tmpdir)
+	cp ./routes.yaml $(tmpdir)
+	mkdir $(tmpdir)/document-generator-api
+	cp -r ./document-generator-api/api-enumerations $(tmpdir)/document-generator-api
 	cd $(tmpdir); zip -r ../$(artifact_name)-$(version).zip *
 	rm -rf $(tmpdir)
 
@@ -43,3 +51,4 @@ dist: clean build package
 .PHONY: sonar
 sonar:
 	mvn sonar:sonar
+

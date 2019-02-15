@@ -1,9 +1,5 @@
 package uk.gov.companieshouse.document.generator.accounts.data.transaction;
 
-import static uk.gov.companieshouse.document.generator.accounts.AccountsDocumentInfoServiceImpl.MODULE_NAME_SPACE;
-
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,11 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.companieshouse.api.model.transaction.Transaction;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static uk.gov.companieshouse.document.generator.accounts.AccountsDocumentInfoServiceImpl.MODULE_NAME_SPACE;
 
 /**
  * TransactionManager is the current temporary internal project solution for communicating with
@@ -42,27 +42,28 @@ public class TransactionManager {
     /**
      * Get transaction if exists
      *
-     * @param id - transaction id
+     * @param transactionLink - transaction link
+     * @param requestId - the id of the request
      * @return transaction object along with the status or not found status.
      * @throws Exception - throws a generic exception to mimic the private sdk throwing an exception.
      *                     We're not to create a custom exception as it will have to be removed when
      *                     the private sdk  gets implemented - additionally the generic exception is
      *                     sufficient
      */
-    public Transaction getTransaction(String id) throws Exception {
+    public Transaction getTransaction(String transactionLink, String requestId) throws Exception {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.set(AUTHORIZATION_HEADER, getApiKey());
 
         HttpEntity requestEntity = new HttpEntity(requestHeaders);
-        String url = getBaseUrl(id);
+        String url = getBaseUrl(transactionLink);
 
         ResponseEntity<Transaction> transactionResponseEntity = restTemplate.exchange(getRootUri() + url, HttpMethod.GET, requestEntity, Transaction.class);
         if (transactionResponseEntity.getStatusCode() != HttpStatus.OK) {
             Map<String, Object> logMap = new HashMap<>();
-            logMap.put("transaction_id", id);
+            logMap.put("transaction_link", transactionLink);
             logMap.put("uri_path", url);
             logMap.put("status", transactionResponseEntity.getStatusCode());
-            LOG.error("Failed to retrieve data from API", logMap);
+            LOG.infoContext(requestId,"Failed to retrieve data from API", logMap);
 
             throw new Exception("Failed to retrieve data from API");
         }
@@ -82,11 +83,11 @@ public class TransactionManager {
     /**
      * Builds the private transaction link with the transaction id
      *
-     * @param id id of the transaction
+     * @param transactionLink link of the transaction
      * @return the private endpoint transaction url with the transaction id
      */
-    private String getBaseUrl(String id) {
-        return new StringBuilder("/private/transactions/").append(id).toString();
+    private String getBaseUrl(String transactionLink) {
+        return new StringBuilder("/private").append(transactionLink).toString();
     }
 
     private String getRootUri() {

@@ -1,23 +1,38 @@
 package uk.gov.companieshouse.document.generator.accounts.data.accounts;
 
-import static uk.gov.companieshouse.document.generator.accounts.AccountsDocumentInfoServiceImpl.MODULE_NAME_SPACE;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import uk.gov.companieshouse.api.ApiClient;
+import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.api.handler.exception.URIValidationException;
+import uk.gov.companieshouse.api.model.accounts.Accounts;
+import uk.gov.companieshouse.api.model.accounts.CompanyAccounts;
+import uk.gov.companieshouse.api.model.accounts.abridged.AbridgedAccountsApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.Debtors.DebtorsApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.creditorswithinoneyear.CreditorsWithinOneYearApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.SmallFullApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.PreviousPeriodApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.CurrentPeriodApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.ApprovalApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.BalanceSheetStatementsApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.AccountingPoliciesApi;
+import uk.gov.companieshouse.api.model.accounts.smallfull.tangible.TangibleApi;
+import uk.gov.companieshouse.document.generator.accounts.data.transaction.Transaction;
+import uk.gov.companieshouse.document.generator.accounts.exception.ServiceException;
+import uk.gov.companieshouse.document.generator.accounts.mapping.smallfull.mappers.SmallFullIXBRLMapper;
+import uk.gov.companieshouse.document.generator.accounts.mapping.smallfull.model.SmallFullApiData;
+import uk.gov.companieshouse.document.generator.accounts.mapping.smallfull.model.ixbrl.SmallFullAccountIxbrl;
+import uk.gov.companieshouse.document.generator.accounts.service.ApiClientService;
+import uk.gov.companieshouse.document.generator.accounts.service.CompanyService;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import uk.gov.companieshouse.api.model.accounts.Accounts;
-import uk.gov.companieshouse.api.model.accounts.abridged.AbridgedAccountsApi;
-import uk.gov.companieshouse.environment.EnvironmentReader;
-import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
-import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
+
+import static uk.gov.companieshouse.document.generator.accounts.AccountsDocumentInfoServiceImpl.MODULE_NAME_SPACE;
 
 /**
  * Temporary solution until private-sdk has been completed (SFA-518, SFA-670). When completed, this
@@ -27,45 +42,30 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 @Component
 public class AccountsManager {
 
-    /** represents the Authorization header name in the request */
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    @Autowired
+    private ApiClientService apiClientService;
 
-    private static final EnvironmentReader READER = new EnvironmentReaderImpl();
-
-    private final String apiUrl = READER.getMandatoryString("API_URL");
-    private final String chsApiKey = READER.getMandatoryString("CHS_API_KEY");
-
-    private static final RestTemplate restTemplate = createRestTemplate();
+    @Autowired
+    private CompanyService companyService;
 
     private static final Logger LOG = LoggerFactory.getLogger(MODULE_NAME_SPACE);
+
+    private static final String NOT_FOUND_API_DATA = "No data found in %s api for link: ";
 
     /**
      * Get accounts resource if exists
      *
      * @param link - self link for the accounts resource
      * @return accounts object along with the status or not found status.
-     * @throws Exception - throws a generic exception to mimic the private sdk throwing an exception.
-     *                     We're not to create a custom exception as it will have to be removed when
-     *                     the private sdk  gets implemented - additionally the generic exception is
-     *                     sufficient
+     * @throws ApiErrorResponseException
+     * @throws URIValidationException
      */
-    public Accounts getAccounts(String link) throws Exception {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(AUTHORIZATION_HEADER, getApiKey());
+    public Accounts getAccounts(String link) throws ApiErrorResponseException,
+            URIValidationException {
 
-        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        ApiClient apiClient = apiClientService.getApiClient();
 
-        ResponseEntity<Accounts> accountsResponseEntity = restTemplate.exchange(getRootUri() + link, HttpMethod.GET, requestEntity, Accounts.class);
-
-        if (accountsResponseEntity.getStatusCode() != HttpStatus.OK) {
-            Map<String, Object> logMap = new HashMap<>();
-            logMap.put("resource", link);
-            logMap.put("status", accountsResponseEntity.getStatusCode());
-            LOG.error("Failed to retrieve data from API", logMap);
-
-            throw new Exception("Failed to retrieve data from API");
-        }
-        return accountsResponseEntity.getBody();
+        return apiClient.accounts().get(link).execute();
     }
 
     /**
@@ -73,45 +73,149 @@ public class AccountsManager {
      *
      * @param link - self link for the abridged accounts resource
      * @return AbridgedAccountsApi object
-     * @throws Exception - throws a generic exception to mimic the private sdk throwing an exception.
-     *                     We're not to create a custom exception as it will have to be removed when
-     *                     the private sdk  gets implemented - additionally the generic exception is
-     *                     sufficient
+     * @throws ApiErrorResponseException
+     * @throws URIValidationException
      */
-    public AbridgedAccountsApi getAbridgedAccounts(String link) throws Exception {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(AUTHORIZATION_HEADER, getApiKey());
+    public AbridgedAccountsApi getAbridgedAccounts(String link) throws ApiErrorResponseException
+            , URIValidationException {
 
-        HttpEntity requestEntity = new HttpEntity(requestHeaders);
+        ApiClient apiClient = apiClientService.getApiClient();
 
-        ResponseEntity<AbridgedAccountsApi> abridgedAccountsResponseEntity = restTemplate.exchange(getRootUri() + link, HttpMethod.GET, requestEntity, AbridgedAccountsApi.class);
-
-        if (abridgedAccountsResponseEntity.getStatusCode() != HttpStatus.OK) {
-            Map<String, Object> logMap = new HashMap<>();
-            logMap.put("resource", link);
-            logMap.put("status", abridgedAccountsResponseEntity.getStatusCode());
-            LOG.error("Failed to retrieve data from API", logMap);
-
-            throw new Exception("Failed to retrieve data from API");
-        }
-        return abridgedAccountsResponseEntity.getBody();
+        return apiClient.abridgedAccounts().get(link).execute();
     }
 
     /**
-     * Creates the rest template when class first loads
+     * Get company-accounts resource if exists
      *
-     * @return Returns a statically created rest template
+     * @param link - self link for the accounts resource
+     * @return CompanyAccounts object along with the status or not found status.
+     * @throws ApiErrorResponseException
+     * @throws URIValidationException
      */
-    private static RestTemplate createRestTemplate() {
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
-        return new RestTemplate(requestFactory);
+    public CompanyAccounts getCompanyAccounts(String link) throws ApiErrorResponseException,
+            URIValidationException {
+
+        ApiClient apiClient = apiClientService.getApiClient();
+
+        return apiClient.companyAccounts().get(link).execute();
     }
 
-    private String getRootUri() {
-        return apiUrl;
+    /**
+     * Get smallFull resources if exits and map to SmallFull IXBRL model
+     *
+     * @param link - self link for the abridged accounts resource
+     * @return SmallFullAccountIxbrl object
+     * @throws ApiErrorResponseException
+     * @throws URIValidationException
+     */
+    public SmallFullAccountIxbrl getSmallFullAccounts(String link, Transaction transaction)
+            throws URIValidationException, ServiceException, ApiErrorResponseException {
+
+        SmallFullApiData smallFullApiData = new SmallFullApiData();
+
+        ApiClient apiClient = apiClientService.getApiClient();
+
+        String errorString = "small full";
+
+        try {
+
+            SmallFullApi smallFull = apiClient.smallFull().get(link).execute();
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getPreviousPeriod())) {
+
+                errorString = "previous period";
+
+                PreviousPeriodApi previousPeriod = apiClient.smallFull().previousPeriod()
+                        .get(smallFull.getLinks().getPreviousPeriod()).execute();
+                smallFullApiData.setPreviousPeriod(previousPeriod);
+            }
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getCurrentPeriod())) {
+
+                errorString = "current period";
+
+                CurrentPeriodApi currentPeriod = apiClient.smallFull().currentPeriod()
+                        .get(smallFull.getLinks().getCurrentPeriod()).execute();
+                smallFullApiData.setCurrentPeriod(currentPeriod);
+            }
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getApproval())) {
+
+                errorString = "approvals";
+
+                ApprovalApi approvals = apiClient.smallFull().approval()
+                        .get(smallFull.getLinks().getApproval()).execute();
+                smallFullApiData.setApproval(approvals);
+            }
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getStatements())) {
+
+                errorString = "statements";
+
+                BalanceSheetStatementsApi statements = apiClient.smallFull().balanceSheetStatements()
+                        .get(smallFull.getLinks().getStatements()).execute();
+                smallFullApiData.setBalanceSheetStatements(statements);
+            }
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getAccountingPolicyNote())) {
+
+                errorString = "accounting policies";
+
+                AccountingPoliciesApi policies = apiClient.smallFull().accountingPolicies()
+                        .get(smallFull.getLinks().getAccountingPolicyNote()).execute();
+                smallFullApiData.setAccountingPolicies(policies);
+            }
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getTangibleAssetsNote())) {
+
+                errorString = "tangible assets";
+
+                TangibleApi tangible = apiClient.smallFull().tangible()
+                        .get(smallFull.getLinks().getTangibleAssetsNote()).execute();
+
+                smallFullApiData.setTangibleAssets(tangible);
+            }
+
+            if (!StringUtils.isEmpty(smallFull.getLinks().getDebtorsNote())) {
+
+                DebtorsApi debtors = apiClient.smallFull().debtors()
+                        .get(smallFull.getLinks().getDebtorsNote()).execute();
+
+                smallFullApiData.setDebtors(debtors);
+            }
+            
+            if (!StringUtils.isEmpty(smallFull.getLinks().getCreditorsWithinOneYearNote())) {
+
+                CreditorsWithinOneYearApi creditorsWithinOneYearApi = apiClient.smallFull().creditorsWithinOneYear()
+                        .get(smallFull.getLinks().getCreditorsWithinOneYearNote()).execute();
+
+                smallFullApiData.setCreditorsWithinOneYear(creditorsWithinOneYearApi);
+            }
+
+        } catch (ApiErrorResponseException e) {
+            handleException(e, errorString, link);
+        }
+        
+        smallFullApiData.setCompanyProfile(companyService.getCompanyProfile(transaction.getCompanyNumber()));
+
+
+        return SmallFullIXBRLMapper.INSTANCE.mapSmallFullIXBRLModel(smallFullApiData);
     }
 
-    private String getApiKey() {
-        return chsApiKey;
+    private void handleException(ApiErrorResponseException e, String text, String link)
+            throws ApiErrorResponseException {
+
+        if (e.getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+            LOG.info(String.format(NOT_FOUND_API_DATA, text, link), setDebugMap(link));
+        } else {
+            throw e;
+        }
+    }
+
+    private Map<String, Object> setDebugMap(String link) {
+        Map<String, Object> logMap = new HashMap<>();
+        logMap.put("LINK", link);
+
+        return logMap;
     }
 }

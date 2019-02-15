@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.companieshouse.document.generator.api.models.DocumentRequest;
 import uk.gov.companieshouse.document.generator.api.models.DocumentResponse;
+import uk.gov.companieshouse.document.generator.api.models.Links;
 import uk.gov.companieshouse.document.generator.api.service.DocumentGeneratorService;
 import uk.gov.companieshouse.document.generator.api.service.response.ResponseObject;
 import uk.gov.companieshouse.document.generator.api.service.response.ResponseStatus;
@@ -86,7 +87,11 @@ public class DocumentGeneratorControllerTest {
         response.setDescription(DESCRIPTION);
         response.setDescriptionIdentifier(DESCRIPTION_IDENTIFIER);
         response.setSize(SIZE);
-        response.setLinks(LOCATION);
+
+        Links links = new Links();
+        links.setLocation(LOCATION);
+        response.setLinks(links);
+
         response.setDescriptionValues(setDescriptionValue());
 
         ResponseObject responseObject = new ResponseObject(ResponseStatus.CREATED, response);
@@ -112,7 +117,7 @@ public class DocumentGeneratorControllerTest {
         response.setDescriptionIdentifier(DESCRIPTION_IDENTIFIER);
         response.setDescriptionValues(setDescriptionValue());
 
-        ResponseObject responseObject = new ResponseObject(ResponseStatus.NOT_RENDERED, response);
+        ResponseObject responseObject = new ResponseObject(ResponseStatus.FAILED_TO_RENDER, response);
 
         when(mockBindingResult.hasErrors()).thenReturn(false);
         when(mockDocumentGeneratorService.generate(any(DocumentRequest.class), any(String.class))).thenReturn(responseObject);
@@ -170,7 +175,6 @@ public class DocumentGeneratorControllerTest {
         DocumentRequest request = new DocumentRequest();
         request.setDocumentType("documentType");
         request.setMimeType("mimeType");
-        request.setResourceId("resourceId");
         request.setResourceUri("resourceUri");
 
         return request;
