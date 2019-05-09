@@ -103,6 +103,60 @@
                 <tr style="height: 21px;">
                     <td style="width: 100%; height: 21px;">{{$companyProfile.last_full_members_list_date}}</td>
                 </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">etag:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.etag}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Links:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.links}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Partial data available:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.partial_data_available}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Previous company names:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.previous_company_names}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Registered office address:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.registered_office_address}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">SIC codes:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.sic_codes}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Subtype:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.subtype}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Type:</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.type}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Undeliverable registered office address</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.undeliverable_registered_office_address}}</td>
+                </tr>
                 </tbody>
             </table>
         </td>
@@ -225,11 +279,44 @@
                 <tr style="height: 21px;">
                     <td style="width: 100%; height: 21px;">{{$companyProfile.branch_company_details}}</td>
                 </tr>
-
                 </tbody>
             </table>
         </td>
     </tr>
+    <tr>
+        <td style="width: 50%;">
+            <h1>Confirmation statement</h1>
+        </td>
+        <td style="width: 50%;">
+            <table border="1" style="border-collapse: collapse; width: 100%;">
+                <tbody>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;"> Last made up to</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.last_made_up_to}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Next due</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.next_due}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Next made up to</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.next_made_up_to}}</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; font-weight: bold; height: 21px;">Overdue</td>
+                </tr>
+                <tr style="height: 21px;">
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.overdue}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
     </tbody>
 </table>
 </body>
