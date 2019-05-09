@@ -18,6 +18,7 @@ import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,15 +47,31 @@ public class CompanyReportDocumentInfoServiceImpl implements DocumentInfoService
         LOG.infoContext(requestId,"Started getting document info for company profile", debugMap);
 
         CompanyProfileApi companyProfileApi;
-        FilingHistoryApi filingHistoryApi;
+        FilingHistoryApi filingHistoryApi = null;
 
         String companyNumber = getCompanyNumberFromUri(resourceUri);
 
         try {
            companyProfileApi = companyService.getCompanyProfile(companyNumber);
-           filingHistoryApi = filingHistoryService.getFilingHistory(companyNumber);
         } catch (ServiceException se) {
             throw new DocumentInfoException("error occurred obtaining the company profile", se);
+        }
+
+        Iterator it = companyProfileApi.getLinks().entrySet().iterator();
+
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+
+            if(pair.getKey() == "filing_history") {
+
+                try {
+                    filingHistoryApi = filingHistoryService.getFilingHistory(companyNumber);
+                }  catch (ServiceException se) {
+                    throw new DocumentInfoException("error occurred obtaining the filing history", se);
+                }
+            } else if(pair.getKey() == "officers") {
+                LOG.info("officers was present. But, there is no implementation to obtain the officers in the SDK yet");
+            }
         }
 
         return createDocumentInfoResponse(companyProfileApi, filingHistoryApi);
