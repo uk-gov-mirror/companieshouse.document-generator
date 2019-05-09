@@ -15,6 +15,7 @@ public class CompanyReport {
     @JsonProperty("company_profile")
     private CompanyProfileApi companyProfileApi;
 
+    @JsonProperty("filing_history")
     private FilingHistoryApi filingHistoryApi;
 
     public CompanyProfileApi getCompanyProfileApi() {
