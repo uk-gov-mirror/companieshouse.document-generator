@@ -29,7 +29,7 @@
                     <td style="width: 100%; font-weight: bold; height: 21px;">Can File:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{.company_report.company_profile.can_file}}</td>
+                    <td style="width: 100%; height: 21px;">{{$companyProfile.can_file}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Company Name:</td>
@@ -165,6 +165,8 @@
         <td style="width: 50%;">
             <h1>Company Account Last Accounts</h1>
         </td>
+        {{$accounts := $companyProfile.accounts}}
+        {{$lastAccounts := $accounts.last_accounts}}
         <td style="width: 50%;">
             <table border="1" style="border-collapse: collapse; width: 100%;">
                 <tbody>
@@ -172,25 +174,25 @@
                     <td style="width: 100%; font-weight: bold; height: 21px;">Last Accounts Made Up To:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.last_accounts.made_up_to}}</td>
+                    <td style="width: 100%; height: 21px;">{{$lastAccounts.made_up_to}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Last Accounts Period End On:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.last_accounts.period_end_on}}</td>
+                    <td style="width: 100%; height: 21px;">{{$lastAccounts.period_end_on}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Last Accounts Period Start On:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.last_accounts.period_start_on}}</td>
+                    <td style="width: 100%; height: 21px;">{{$lastAccounts.period_start_on}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Type:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.last_accounts.type}}</td>
+                    <td style="width: 100%; height: 21px;">{{$lastAccounts.type}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -200,6 +202,8 @@
         <td style="width: 50%;">
             <h1>Company Account Next Accounts</h1>
         </td>
+        {{$accounts := $companyProfile.accounts}}
+        {{$nextAccounts := $accounts.next_accounts}}
         <td style="width: 50%;">
             <table border="1" style="border-collapse: collapse; width: 100%;">
                 <tbody>
@@ -207,25 +211,25 @@
                     <td style="width: 100%; font-weight: bold; height: 21px;"> Due On:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.next_accounts.due_on}}</td>
+                    <td style="width: 100%; height: 21px;">{{$nextAccounts.due_on}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Overdue:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.next_accounts.overdue}}</td>
+                    <td style="width: 100%; height: 21px;">{{$nextAccounts.overdue}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Next Accounts Period Start On:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.next_accounts.period_start_on}}</td>
+                    <td style="width: 100%; height: 21px;">{{$nextAccounts.period_start_on}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Next Accounts Period End On:</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.accounts.next_accounts.period_end_on}}</td>
+                    <td style="width: 100%; height: 21px;">{{$nextAccounts.period_end_on}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -235,6 +239,7 @@
         <td style="width: 50%;">
             <h1>Annual Return</h1>
         </td>
+        {{$annualReturn := $companyProfile.annual_return}}
         <td style="width: 50%;">
             <table border="1" style="border-collapse: collapse; width: 100%;">
                 <tbody>
@@ -242,25 +247,25 @@
                     <td style="width: 100%; font-weight: bold; height: 21px;"> Last made up to</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.annual_return.last_made_up_to}}</td>
+                    <td style="width: 100%; height: 21px;">{{$annualReturn.last_made_up_to}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Next due</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.annual_return.next_due}}</td>
+                    <td style="width: 100%; height: 21px;">{{$annualReturn.next_due}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Next made up to</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.annual_return.next_made_up_to}}</td>
+                    <td style="width: 100%; height: 21px;">{{$annualReturn.next_made_up_to}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Overdue</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.annual_return.overdue}}</td>
+                    <td style="width: 100%; height: 21px;">{{$annualReturn.overdue}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -287,6 +292,7 @@
         <td style="width: 50%;">
             <h1>Confirmation statement</h1>
         </td>
+        {{$confirmationStatement := $companyProfile.confirmation_statement}}
         <td style="width: 50%;">
             <table border="1" style="border-collapse: collapse; width: 100%;">
                 <tbody>
@@ -294,29 +300,30 @@
                     <td style="width: 100%; font-weight: bold; height: 21px;"> Last made up to</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.last_made_up_to}}</td>
+                    <td style="width: 100%; height: 21px;">{{$confirmationStatement.last_made_up_to}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Next due</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.next_due}}</td>
+                    <td style="width: 100%; height: 21px;">{{$confirmationStatement.next_due}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Next made up to</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.next_made_up_to}}</td>
+                    <td style="width: 100%; height: 21px;">{{$confirmationStatement.next_made_up_to}}</td>
                 </tr>
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Overdue</td>
                 </tr>
                 <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.confirmation_statement.overdue}}</td>
+                    <td style="width: 100%; height: 21px;">{{$confirmationStatement.overdue}}</td>
                 </tr>
                 </tbody>
             </table>
         </td>
+    </tr>
     </tbody>
 </table>
 </body>
