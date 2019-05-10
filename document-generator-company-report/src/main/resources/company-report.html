@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {{$companyProfile := .company_report.company_profile}}
+{{$filingHistory:= .company_report.filing_history}}
 <head>
     <meta charset="UTF-8">
     <title>Company Report</title>
@@ -124,9 +125,34 @@
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Previous company names:</td>
                 </tr>
-                <tr style="height: 21px;">
-                    <td style="width: 100%; height: 21px;">{{$companyProfile.previous_company_names}}</td>
+
+                <tr>
+
+                    <td>
+                        {{$prevCompanyNames := $companyProfile.previous_company_names}}
+
+
+                        {{- range $prevCompanyNames -}}
+
+                        <table border="1" style="border-collapse: collapse; width: 100%;">
+                            <tbody>
+                            <tr style="height: 21px;">
+                                <td style="width: 100%; font-weight: bold; height: 21px;">{{.name}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100%; font-weight: height: 21px;">{{.ceasedOn}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100%; font-weight: height: 21px;">{{.effective_from}}</td>
+                            </tr>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        {{end}}
+                    </td>
                 </tr>
+
                 <tr style="height: 21px;">
                     <td style="width: 100%; font-weight: bold; height: 21px;">Registered office address:</td>
                 </tr>
@@ -161,7 +187,8 @@
             </table>
         </td>
     </tr>
-    <tr>
+
+        <tr>
         <td style="width: 50%;">
             <h1>Company Account Last Accounts</h1>
         </td>
@@ -198,6 +225,7 @@
             </table>
         </td>
     </tr>
+
     <tr>
         <td style="width: 50%;">
             <h1>Company Account Next Accounts</h1>
@@ -324,6 +352,61 @@
             </table>
         </td>
     </tr>
+    </tbody>
+</table>
+
+
+<br><br>
+<h1 style="text-align: center;"><span style="color: #000000;">Filing History {{$filingHistory.total_count}} items in total</span></h1>
+
+<br>
+<p> Status: {{$filingHistory.filing_history_status}}></p>
+
+<table border="1" style="border-collapse: collapse; width: 95%;" height="95">
+    <tbody>
+
+    {{$items := $filingHistory.items}}
+
+    {{- setValue "items-counter" 0 -}}
+
+    {{- range $items -}}
+
+        {{- incValue "items-counter" -}}
+
+
+        <tr>
+            <td style="width: 50%;">
+                <h1> {{getValue "items-counter"}} </h1>
+
+            </td>
+            <td style="width: 50%;">
+                <table border="1" style="border-collapse: collapse; width: 100%;">
+                    <tbody>
+
+
+                    <tr style="height: 21px;">
+                        <td style="width: 100%; height: 21px;">Barcode</td>
+                    </tr>
+                    <tr style="height: 21px;">
+                        <td style="width: 100%; font-weight: bold; height: 21px;">{{.barcode}}</td>
+                    </tr>
+
+                    <tr style="height: 21px;">
+                        <td style="width: 100%; height: 21px;">Category</td>
+                    </tr>
+                    <tr style="height: 21px;">
+                        <td style="width: 100%; font-weight: bold; height: 21px;">{{.category}}</td>
+                    </tr>
+
+                    
+
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+    {{end}}
     </tbody>
 </table>
 </body>
