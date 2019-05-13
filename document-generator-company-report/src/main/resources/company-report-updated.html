@@ -292,6 +292,8 @@
 
 <p style="page-break-before: always">
 
+    <!--COMPANY PROFILE-->
+
     {{$charsPerPage := 7000}}
     {{getValue "page-number"}}
 <div id="CompanyRegisterInfoHeader" class="page margin-xx-large">
@@ -300,8 +302,6 @@
             Company Register Information
             <br/>
         </h1>
-
-
     </div>
 
     <table>
@@ -391,6 +391,166 @@
         </tr>
     </table>
 </div>
+
+<p style="page-break-before: always">
+
+    <!--COMPANY STATUS DETAILS-->
+
+
+    {{$charsPerPage := 7000}}
+    {{getValue "page-number"}}
+<div id="CompanyStatusDetailsHeader" class="page margin-xx-large">
+    <div class="header">
+        <h1 class="text--center">
+            Company Status Details
+            <br/>
+        </h1>
+    </div>
+
+
+    <br>
+
+    <p> Status: {{$companyProfile.company_status}}</p>
+
+<br>
+
+<table>
+    <tr>
+        <td>Case Number:</td>
+        <td>**case number**</td>
+    </tr>
+    <tr>
+        <td>Case Type:</td>
+        <td>**case type**</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td>Appointment Date:</td>
+        <td>**appointment date**</td>
+    </tr>
+
+
+    <p> other details dependent on company status - more info required</p>
+</table>
+
+<p style="page-break-before: always">
+
+
+    <!--CURRENT APPOINTMENTS-->
+
+
+    {{$charsPerPage := 7000}}
+    {{getValue "page-number"}}
+<div id="currentAppointmentsHeader" class="page margin-xx-large">
+    <div class="header">
+        <h1 class="text--center">
+            Current Appointments
+            <br/>
+        </h1>
+    </div>
+
+    <br>
+<p><b> Number of current appointments :</b> ** NUMBER OF CURRENT APPOINTMENTS **</p>
+
+<br>
+
+<p> ADD LIST OF APPOINTMENTS</p>
+
+<p style="page-break-before: always">
+
+
+
+<p style="page-break-before: always">
+
+
+    <!--PSC-->
+
+
+    {{$charsPerPage := 7000}}
+    {{getValue "page-number"}}
+    <div id="pscAppointmentsHeader" class="page margin-xx-large">
+        <div class="header">
+            <h1 class="text--center">
+               PSC Appointments ?
+                <br/>
+            </h1>
+        </div>
+
+        <br>
+<p><b> Number of current psc appointments :</b> ** NUMBER OF CURRENT PSC APPOINTMENTS **</p>
+
+<br>
+
+<p> ADD LIST OF PSC APPOINTMENTS</p>
+
+<p style="page-break-before: always">
+
+
+    <!--MORTGAGE CHARGE DETAILS-->
+
+
+    {{$charsPerPage := 7000}}
+    {{getValue "page-number"}}
+    <div id="mortgageChargeHeader" class="page margin-xx-large">
+        <div class="header">
+            <h1 class="text--center">
+                Mortgage Charge Details
+                <br/>
+            </h1>
+        </div>
+
+        <br>
+<p><b> Number of Charges :</b> ** NUMBER OF CHARGES **</p>
+
+<br>
+
+<p> ADD LIST OF CHARGES</p>
+
+
+<p style="page-break-before: always">
+
+
+    <!--FILING HISTORY-->
+
+
+    {{$charsPerPage := 7000}}
+    {{getValue "page-number"}}
+    <div id="filingHistoryHeader" class="page margin-xx-large">
+        <div class="header">
+            <h1 class="text--center">
+                Recent Filing History
+                <br/>
+            </h1>
+        </div>
+
+        <br>
+<p><b> Documents filed since :</b> {{$companyProfile.date_of_creation}}</p>
+
+<table>
+    <tr></tr>
+    <tr>
+        <td><b>DATE:</b></td>
+        <td><b>FORM:</b></td>
+        <td><b>DESCRIPTION:</b></td>
+    </tr>
+
+    {{$items := $filingHistory.items}}
+
+    {{- range $items -}}
+
+    <tr>
+        <td>{{.date}}</td>
+        <td>{{.type}}</td>
+        <td>{{.description}}</td>
+    </tr>
+
+    {{end}}
+ <br>
+
+    <p> **excludes share allotment documents????</p>
+
+
+
 
 </body>
 </html>
