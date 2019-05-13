@@ -4,11 +4,12 @@
 {{$filingHistory:= .company_report.filing_history}}
 <head>
     <meta charset="UTF-8">
-    <title>{{$companyProfile.company_name</title>
+    <title>{{$companyProfile.company_name}}</title>
     <style type="text/css">
 	   body {
 	       font-size: 12px;
 	   }
+	   .pagebreak { page-break-before: always; }
 	   /*
 	    * Addresses `h1` font sizes within `section` and `article` in Firefox 4+,
 	    * Safari 5, and Chrome.
@@ -31,6 +32,7 @@
 	    */
 	   table {
 	       border-spacing: 10px;
+	       border-top: 1px solid;
 	   }
 	   /**
 	   * Text alignment
@@ -264,14 +266,14 @@
 <div>
     {{$charsPerPage := 7000}}
     {{setValue "page-number" 0}}
-    <div id="AccountsHeader" class="page margin-xx-large">
+    <div id="CompanyRecordHeader" class="page margin-xx-large">
         <div class="header">
             <h1 class="text--center">
                 The Company Record for:
                 <br/>
                 {{$companyProfile.company_name}}
                 <br/>
-                {{$$companyProfile.company_number}}
+                {{$companyProfile.company_number}}
             </h1>
 
             <h2 class="text--center">
@@ -287,5 +289,108 @@
         </h2>
     </div>
 </div>
+
+<p style="page-break-before: always">
+
+    {{$charsPerPage := 7000}}
+    {{getValue "page-number"}}
+<div id="CompanyRegisterInfoHeader" class="page margin-xx-large">
+    <div class="header">
+        <h1 class="text--center">
+            Company Register Information
+            <br/>
+        </h1>
+
+
+    </div>
+
+    <table>
+        <tr>
+            <td>Company Number:</td>
+            <td>{{$companyProfile.company_number}}</td>
+        </tr>
+        <tr>
+            <td>Company Name:</td>
+            <td>{{$companyProfile.company_name}}</td>
+        </tr>
+        <tr>
+            <td>Registered Office:</td>
+            <td>{{$companyProfile.registered_office_address}}</td>
+        </tr>
+        <tr>
+            <td>Company Type:</td>
+            <td>{{$companyProfile.type}}</td>
+        </tr>
+        <tr>
+            <td>Country of Origin:</td>
+            <td>{{$companyProfile.jurisdiction}}</td>
+        </tr>
+        <tr>
+            <td>Status:</td>
+            <td>{{$companyProfile.company_status}}</td>
+        </tr>
+        <tr>
+            <td>Nature Of Business (SIC):</td>
+            <td> {{$companyProfile.sic_codes}}</td>
+        </tr>
+        <tr>
+            <td>Number Of Charges:</td>
+            <td> !! USE CHARGES API !! </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td><span style="font-weight:bold"><h1>Previous Names</h1></span></td>
+        </tr>
+        <tr>
+
+            {{$prevCompanyNames := $companyProfile.previous_company_names}}
+
+                <td><span style="font-weight:bold">Date of Change</span></td>
+                <td><h1>Previous Name</h1></td>
+
+                {{- range $prevCompanyNames -}}
+                <tr>
+                     <td>{{.effective_from}} </td>
+                    <td>{{.name}} </td>
+                </tr>
+            {{end}}
+        <br>
+        <tr>
+            <td><h1>Key Filing Dates</h1></td>
+        </tr>
+        <tr>
+            <td>Accounting Reference Date: </td>
+            <td>{{$companyProfile.accounts.accounting_reference_date}}</td>
+        </tr>
+        <tr>
+            <td>Last Accounts Made Up To: </td>
+            <td>{{$companyProfile.accounts.last_accounts}}</td>
+        </tr>
+        <tr>
+            <td>Next Accounts Due: </td>
+            <td>{{$companyProfile.accounts.next_accounts}}</td>
+        </tr>
+        <tr>
+            <td>Last Confirmation Statement Date: </td>
+            <td>{{$companyProfile.confirmation_statement.last_made_up_to}}</td>
+        </tr>
+        <tr>
+            <td>Next Confirmation Statement Due: </td>
+            <td>{{$companyProfile.confirmation_statement.next_due}}</td>
+        </tr>
+        <br>
+        <tr>
+            <td>Last members list: </td>
+            <td>{{$companyProfile.last_full_members_list_date}}</td>
+        </tr>
+        <tr>
+            <td>Last Bulk shareholders List: </td>
+            <td> ????????????? </td>
+        </tr>
+    </table>
+</div>
+
 </body>
 </html>
