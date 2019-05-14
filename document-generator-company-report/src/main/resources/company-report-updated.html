@@ -2,6 +2,7 @@
 <html lang="en">
 {{$companyProfile := .company_report.company_profile}}
 {{$filingHistory:= .company_report.filing_history}}
+{{$officers:= .company_report.officers}}
 <head>
     <meta charset="UTF-8">
     <title>{{$companyProfile.company_name}}</title>
@@ -264,6 +265,7 @@
 </head>
 <body>
 <div>
+    <div class="page">
     {{$charsPerPage := 7000}}
     {{setValue "page-number" 0}}
     <div id="CompanyRecordHeader" class="page margin-xx-large">
@@ -289,11 +291,11 @@
         </h2>
     </div>
 </div>
+</div>
 
-<p style="page-break-before: always">
 
     <!--COMPANY PROFILE-->
-
+<div class="page">
     {{$charsPerPage := 7000}}
     {{getValue "page-number"}}
 <div id="CompanyRegisterInfoHeader" class="page margin-xx-large">
@@ -329,6 +331,7 @@
             <td>Status:</td>
             <td>{{$companyProfile.company_status}}</td>
         </tr>
+        <tr>
         <tr>
             <td>Nature Of Business (SIC):</td>
             <td> {{$companyProfile.sic_codes}}</td>
@@ -391,14 +394,15 @@
         </tr>
     </table>
 </div>
+</div>
 
-<p style="page-break-before: always">
 
     <!--COMPANY STATUS DETAILS-->
 
-
+    <div class="page">
     {{$charsPerPage := 7000}}
-    {{getValue "page-number"}}
+    {{incValue "page-number"}}
+        {{getValue "page-number"}}
 <div id="CompanyStatusDetailsHeader" class="page margin-xx-large">
     <div class="header">
         <h1 class="text--center">
@@ -433,14 +437,17 @@
     <p> other details dependent on company status - more info required</p>
 </table>
 
-<p style="page-break-before: always">
+</div>
+    </div>
+
 
 
     <!--CURRENT APPOINTMENTS-->
 
-
+    <div class="page">
     {{$charsPerPage := 7000}}
-    {{getValue "page-number"}}
+        {{incValue "page-number"}}
+        {{getValue "page-number"}}
 <div id="currentAppointmentsHeader" class="page margin-xx-large">
     <div class="header">
         <h1 class="text--center">
@@ -450,24 +457,58 @@
     </div>
 
     <br>
-<p><b> Number of current appointments :</b> ** NUMBER OF CURRENT APPOINTMENTS **</p>
+<p><b> Number of current appointments :</b> {{$officers.active_count}}</p>
 
 <br>
 
-<p> ADD LIST OF APPOINTMENTS</p>
+<table>
+    <tr>
+        <td>{{$officers.occupation}}</td>
+        <td>{{$officers.name}}</td>
+    </tr>
+    <tr>
+        <td><b>Appointed:</b></td>
+        <td>{{$officers.appointed_on}}</td>
 
-<p style="page-break-before: always">
 
+        <td><b>Date of Birth:</b> >{{$officers.date_of_birth}} </td>
 
+    </tr>
+    <tr></tr>
+    <tr>
+        <td><b>No. of appointments:</b></td>
+        <td>** number of appointments?? **</td>
+    </tr>
+    <tr>
+        <td><b>Address:</b></td>
+    <td>
+    <tr>{{$officers.addressApi.care_of}}</tr>
+    <tr>{{$officers.addressApi.po_box}}</tr>
+    <tr>{{$officers.addressApi.address_line_1}}</tr>
+    <tr>{{$officers.addressApi.address_line_2}}</tr>
+    <tr>{{$officers.addressApi.locality}}</tr>
+    <tr>{{$officers.addressApi.region}}</tr>
+    <tr>{{$officers.addressApi.country}}</tr>
+    <tr>{{$officers.addressApi.postal_code}}</tr>
 
-<p style="page-break-before: always">
+    </td>
+    </tr>
 
+    <tr>
+        <td>Country/State of Residence: </td>
+        <td>{{$officers.addressApi.country_of_residence}} </td>
+    </tr>
+
+</table>
+
+</div>
 
     <!--PSC-->
 
-
+        <div class="page">
     {{$charsPerPage := 7000}}
-    {{getValue "page-number"}}
+            {{incValue "page-number"}}
+            {{getValue "page-number"}}
     <div id="pscAppointmentsHeader" class="page margin-xx-large">
         <div class="header">
             <h1 class="text--center">
@@ -483,14 +524,16 @@
 
 <p> ADD LIST OF PSC APPOINTMENTS</p>
 
-<p style="page-break-before: always">
+    </div>
+
 
 
     <!--MORTGAGE CHARGE DETAILS-->
 
-
+            <div class="page">
     {{$charsPerPage := 7000}}
-    {{getValue "page-number"}}
+                {{incValue "page-number"}}
+                {{getValue "page-number"}}
     <div id="mortgageChargeHeader" class="page margin-xx-large">
         <div class="header">
             <h1 class="text--center">
@@ -506,15 +549,15 @@
 
 <p> ADD LIST OF CHARGES</p>
 
-
-<p style="page-break-before: always">
+    </div>
 
 
     <!--FILING HISTORY-->
 
-
+     <div class="page">
     {{$charsPerPage := 7000}}
-    {{getValue "page-number"}}
+         {{incValue "page-number"}}
+         {{getValue "page-number"}}
     <div id="filingHistoryHeader" class="page margin-xx-large">
         <div class="header">
             <h1 class="text--center">
@@ -549,7 +592,8 @@
 
     <p> **excludes share allotment documents????</p>
 
-
+</table>
+    </div>
 
 
 </body>
