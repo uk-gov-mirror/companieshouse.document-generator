@@ -1,0 +1,73 @@
+package uk.gov.companieshouse.document.generator.company.report.mapping.model;
+
+import uk.gov.companieshouse.api.model.charges.ChargesApi;
+import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
+import uk.gov.companieshouse.api.model.filinghistory.FilingHistoryApi;
+import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
+import uk.gov.companieshouse.api.model.officers.OfficersApi;
+import uk.gov.companieshouse.api.model.psc.PscsApi;
+
+public class CompanyReportApiData {
+
+    private CompanyProfileApi companyProfileApi;
+
+    private FilingHistoryApi filingHistoryApi;
+
+    private InsolvencyApi insolvencyApi;
+
+    private OfficersApi officersApi;
+
+    private ChargesApi chargesApi;
+
+    private PscsApi pscsApi;
+
+    public CompanyProfileApi getCompanyProfileApi() {
+        return companyProfileApi;
+    }
+
+    public void setCompanyProfileApi(
+        CompanyProfileApi companyProfileApi) {
+        this.companyProfileApi = companyProfileApi;
+    }
+
+    public FilingHistoryApi getFilingHistoryApi() {
+        return filingHistoryApi;
+    }
+
+    public void setFilingHistoryApi(
+        FilingHistoryApi filingHistoryApi) {
+        this.filingHistoryApi = filingHistoryApi;
+    }
+
+    public InsolvencyApi getInsolvencyApi() {
+        return insolvencyApi;
+    }
+
+    public void setInsolvencyApi(InsolvencyApi insolvencyApi) {
+        this.insolvencyApi = insolvencyApi;
+    }
+
+    public OfficersApi getOfficersApi() {
+        return officersApi;
+    }
+
+    public void setOfficersApi(OfficersApi officersApi) {
+        this.officersApi = officersApi;
+    }
+
+    public ChargesApi getChargesApi() {
+        return chargesApi;
+    }
+
+    public void setChargesApi(ChargesApi chargesApi) {
+        this.chargesApi = chargesApi;
+    }
+
+    public PscsApi getPscsApi() {
+        return pscsApi;
+    }
+
+    public void setPscsApi(PscsApi pscsApi) {
+        this.pscsApi = pscsApi;
+    }
+}

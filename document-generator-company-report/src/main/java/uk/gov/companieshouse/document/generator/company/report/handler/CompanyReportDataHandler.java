@@ -20,8 +20,9 @@ import uk.gov.companieshouse.api.model.officers.OfficersApi;
 import uk.gov.companieshouse.api.model.psc.PscsApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.HandlerException;
 import uk.gov.companieshouse.document.generator.company.report.exception.ServiceException;
-import uk.gov.companieshouse.document.generator.company.report.model.CompanyReport;
-import uk.gov.companieshouse.document.generator.company.report.model.items.FormattedAdditionalInformation;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
 import uk.gov.companieshouse.document.generator.company.report.service.ApiClientService;
 import uk.gov.companieshouse.document.generator.company.report.service.CompanyService;
 import uk.gov.companieshouse.document.generator.interfaces.model.DocumentInfoResponse;
@@ -31,10 +32,8 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -46,6 +45,9 @@ public class CompanyReportDataHandler {
 
     @Autowired
     private ApiClientService apiClientService;
+
+    @Autowired
+    private CompanyReportMapper companyReportMapper;
 
     public static final String MODULE_NAME_SPACE = "document-generator-company-report";
 
@@ -95,14 +97,10 @@ public class CompanyReportDataHandler {
     private String getCompanyReportData(String companyNumber) throws HandlerException,
         URIValidationException, ApiErrorResponseException {
 
-        CompanyProfileApi companyProfileApi;
-        FilingHistoryApi filingHistoryApi = null;
-        InsolvencyApi insolvencyApi = null;
-        OfficersApi officersApi = null;
-        ChargesApi chargesApi = null;
-        PscsApi pscsApi = null;
+        CompanyReportApiData companyReportApiData = new CompanyReportApiData();
 
-        companyProfileApi = getCompanyProfile(companyNumber);
+        CompanyProfileApi companyProfileApi = getCompanyProfile(companyNumber);
+        companyReportApiData.setCompanyProfileApi(companyProfileApi);
 
         ApiClient apiClient = apiClientService.getApiClient();
 
@@ -116,40 +114,44 @@ public class CompanyReportDataHandler {
             try {
                 if(pair.getKey() == "filing_history") {
                     errorString = "filing history";
-                    filingHistoryApi = apiClient.filingHistory()
+                    FilingHistoryApi filingHistoryApi = apiClient.filingHistory()
                         .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/filing-history").execute();
+                    companyReportApiData.setFilingHistoryApi(filingHistoryApi);
                 }
 
                 else if (pair.getKey() == "insolvency") {
                     errorString ="insolvency";
-                    insolvencyApi = apiClient.insolvency()
+                    InsolvencyApi insolvencyApi = apiClient.insolvency()
                         .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/insolvency").execute();
+                    companyReportApiData.setInsolvencyApi(insolvencyApi);
                 }
 
                 else if(pair.getKey() == "officers") {
                     errorString = "officers";
-                    officersApi = apiClient.officers()
+                    OfficersApi officersApi = apiClient.officers()
                         .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers").execute();
+                    companyReportApiData.setOfficersApi(officersApi);
                 }
 
                 else if(pair.getKey() == "charges") {
                     errorString = "charges";
-                    chargesApi = apiClient.charges()
+                    ChargesApi chargesApi = apiClient.charges()
                         .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/charges").execute();
+                    companyReportApiData.setChargesApi(chargesApi);
                 }
 
                 else if(pair.getKey() == "persons_with_significant_control_statements") {
                     errorString = "persons with significant control statements";
-                    pscsApi = apiClient.pscs().list(GET_COMPANY_URI.expand(companyNumber).toString() +
+                    PscsApi pscsApi = apiClient.pscs().list(GET_COMPANY_URI.expand(companyNumber).toString() +
                             "/persons-with-significant-control-statements").execute();
+                    companyReportApiData.setPscsApi(pscsApi);
                 }
             } catch (ApiErrorResponseException e) {
                 handleException(e, errorString, companyNumber);
             }
         }
 
-        return mapCompanyReport(companyProfileApi, filingHistoryApi, insolvencyApi,
-            officersApi, chargesApi, pscsApi);
+        return toJson(companyReportMapper.mapCompanyReport(companyReportApiData));
     }
 
     private CompanyProfileApi getCompanyProfile(String companyNumber) throws HandlerException {
@@ -159,40 +161,6 @@ public class CompanyReportDataHandler {
         } catch (ServiceException se) {
             throw new HandlerException("error occurred obtaining the company profile", se);
         }
-    }
-
-    private String mapCompanyReport(CompanyProfileApi companyProfileApi,
-        FilingHistoryApi filingHistoryApi,
-        InsolvencyApi insolvencyApi, OfficersApi officersApi,
-        ChargesApi chargesApi, PscsApi pscsApi) throws HandlerException {
-
-        CompanyReport companyReport = new CompanyReport();
-        companyReport.setCompanyProfile(companyProfileApi);
-        companyReport.setFilingHistory(filingHistoryApi);
-        companyReport.setInsolvency(insolvencyApi);
-        companyReport.setOfficers(officersApi);
-        companyReport.setCharges(chargesApi);
-        companyReport.setPscsApi(pscsApi);
-
-        companyReport.setFormattedAdditionalInformation(formatAdditionalInformation(companyProfileApi, filingHistoryApi));
-
-        return toJson(companyReport);
-    }
-
-    private FormattedAdditionalInformation formatAdditionalInformation(CompanyProfileApi companyProfileApi,
-        FilingHistoryApi filingHistoryApi) {
-
-        FormattedAdditionalInformation formattedAdditionalInformation = new FormattedAdditionalInformation();
-
-        formattedAdditionalInformation.setCompanyStatus("test");
-        formattedAdditionalInformation.setCompanyType("test");
-
-        List<String> natureOfBusinessSIC = new ArrayList<>();
-        for(String s : companyProfileApi.getSicCodes()) {
-            natureOfBusinessSIC.add("test");
-        }
-
-        return formattedAdditionalInformation;
     }
 
     private String toJson(CompanyReport companyReport) throws HandlerException {
@@ -210,8 +178,8 @@ public class CompanyReportDataHandler {
         } catch (JsonProcessingException e) {
             throw new HandlerException(
                 "Could not serialise Document Info for the company report for: "
-                    + companyReport.getCompanyProfile().getCompanyNumber() + ": "
-                    + companyReport.getCompanyProfile().getCompanyName());
+                    + companyReport.getRegistrationInformation().getCompanyNumber() + ": "
+                    + companyReport.getRegistrationInformation().getCompanyName());
         }
 
         return reportToJson;

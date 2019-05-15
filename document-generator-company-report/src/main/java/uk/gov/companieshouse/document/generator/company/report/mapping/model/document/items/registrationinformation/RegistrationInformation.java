@@ -1,0 +1,108 @@
+package uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.Status;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.CompanyType;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.RegisteredOffice;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.SicCodes;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@JsonInclude(Include.NON_NULL)
+public class RegistrationInformation {
+
+    @JsonProperty("company_number")
+    private String companyNumber;
+
+    @JsonProperty("company_name")
+    private String companyName;
+
+    @JsonProperty("date_of_incorporation")
+    private LocalDate dateOfIncorporation;
+
+    @JsonProperty("registered_office")
+    private RegisteredOffice registeredOffice;
+
+    @JsonProperty("company_type")
+    private CompanyType companyType;
+
+    @JsonProperty("status")
+    private Status status;
+
+    @JsonProperty("nature_of_business")
+    private List<SicCodes> natureOfBusiness;
+
+    @JsonProperty("number_of_charges")
+    private String numberOfCharges;
+
+    public String getCompanyNumber() {
+        return companyNumber;
+    }
+
+    public void setCompanyNumber(String companyNumber) {
+        this.companyNumber = companyNumber;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public LocalDate getDateOfIncorporation() {
+        return dateOfIncorporation;
+    }
+
+    public void setDateOfIncorporation(LocalDate dateOfIncorporation) {
+        this.dateOfIncorporation = dateOfIncorporation;
+    }
+
+    public RegisteredOffice getRegisteredOffice() {
+        return registeredOffice;
+    }
+
+    public void setRegisteredOffice(
+        RegisteredOffice registeredOffice) {
+        this.registeredOffice = registeredOffice;
+    }
+
+    public CompanyType getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(
+        CompanyType companyType) {
+        this.companyType = companyType;
+    }
+
+    public Status getCompanyStatus() {
+        return status;
+    }
+
+    public void setCompanyStatus(
+        Status status) {
+        this.status = status;
+    }
+
+    public List<SicCodes> getNatureOfBusiness() {
+        return natureOfBusiness;
+    }
+
+    public void setNatureOfBusiness(
+        List<SicCodes> natureOfBusiness) {
+        this.natureOfBusiness = natureOfBusiness;
+    }
+
+    public String getNumberOfCharges() {
+        return numberOfCharges;
+    }
+
+    public void setNumberOfCharges(String numberOfCharges) {
+        this.numberOfCharges = numberOfCharges;
+    }
+}
