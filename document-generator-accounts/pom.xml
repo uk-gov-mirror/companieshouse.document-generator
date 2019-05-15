@@ -26,8 +26,6 @@
 
         <!--Dependencies-->
         <spring-boot-start-web.version>2.0.4.RELEASE</spring-boot-start-web.version>
-        <environment-reader-library.version>1.2.0-rc1</environment-reader-library.version>
-        <structured-logging.version>1.3.0-rc1</structured-logging.version>
 
         <!-- JUnit Testing -->
         <junit-jupiter-engine.version>5.2.0</junit-jupiter-engine.version>
@@ -37,16 +35,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>uk.gov.companieshouse</groupId>
-            <artifactId>environment-reader-library</artifactId>
-            <version>${environment-reader-library.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.companieshouse</groupId>
-            <artifactId>structured-logging</artifactId>
-            <version>${structured-logging.version}</version>
-        </dependency>
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>document-generator-interfaces</artifactId>

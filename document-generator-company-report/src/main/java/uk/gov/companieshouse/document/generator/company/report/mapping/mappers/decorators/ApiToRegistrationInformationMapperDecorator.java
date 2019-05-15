@@ -41,6 +41,14 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
     private Status setCompanyStatus(String companyStatus, String companyStatusDetail) {
         Status status = new Status();
 
+        if (companyStatus != null || !companyStatus.isEmpty()) {
+
+        }
+
+        if (companyStatusDetail != null || !companyStatusDetail.isEmpty()) {
+
+        }
+
         return status;
     }
 
