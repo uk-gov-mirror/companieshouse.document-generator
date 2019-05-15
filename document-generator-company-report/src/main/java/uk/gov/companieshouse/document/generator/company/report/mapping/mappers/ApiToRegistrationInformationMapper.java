@@ -9,6 +9,8 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.d
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 
+import java.io.IOException;
+
 @RequestScope
 @Mapper(componentModel = "spring")
 @DecoratedWith(ApiToRegistrationInformationMapperDecorator.class)
@@ -28,5 +30,5 @@ public interface ApiToRegistrationInformationMapper {
         @Mapping(source = "companyProfileApi.registeredOfficeAddress.premises", target = "registeredOffice.premises"),
         @Mapping(source = "companyProfileApi.registeredOfficeAddress.region", target = "registeredOffice.region")
     })
-    RegistrationInformation apiToRegistrationInformation(CompanyReportApiData companyReportApiData);
+    RegistrationInformation apiToRegistrationInformation(CompanyReportApiData companyReportApiData) throws IOException;
 }

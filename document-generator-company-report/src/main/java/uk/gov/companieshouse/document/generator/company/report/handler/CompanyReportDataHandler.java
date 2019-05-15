@@ -19,6 +19,7 @@ import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
 import uk.gov.companieshouse.api.model.officers.OfficersApi;
 import uk.gov.companieshouse.api.model.psc.PscsApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.HandlerException;
+import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
 import uk.gov.companieshouse.document.generator.company.report.exception.ServiceException;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
@@ -37,6 +38,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import static uk.gov.companieshouse.document.generator.company.report.CompanyReportDocumentInfoServiceImpl.MODULE_NAME_SPACE;
+
 @Component
 public class CompanyReportDataHandler {
 
@@ -48,8 +51,6 @@ public class CompanyReportDataHandler {
 
     @Autowired
     private CompanyReportMapper companyReportMapper;
-
-    public static final String MODULE_NAME_SPACE = "document-generator-company-report";
 
     private static final Logger LOG = LoggerFactory.getLogger(MODULE_NAME_SPACE);
 
@@ -75,14 +76,14 @@ public class CompanyReportDataHandler {
         try {
             LOG.infoContext(requestId, "Getting data for report for company number: " + companyNumber, getDebugMap(companyNumber));
             return createDocumentInfoResponse(companyNumber);
-        } catch (URIValidationException | ApiErrorResponseException e) {
+        } catch (URIValidationException | ApiErrorResponseException | MapperException e) {
             LOG.errorContext(requestId,"Failed to get data for report for company number " + companyNumber, e, getDebugMap(companyNumber));
             throw new HandlerException(e.getMessage(), e.getCause());
         }
     }
 
     private DocumentInfoResponse createDocumentInfoResponse(String companyNumber) throws HandlerException,
-        URIValidationException, ApiErrorResponseException {
+        URIValidationException, ApiErrorResponseException, MapperException {
 
         DocumentInfoResponse documentInfoResponse = new DocumentInfoResponse();
 
@@ -95,7 +96,7 @@ public class CompanyReportDataHandler {
     }
 
     private String getCompanyReportData(String companyNumber) throws HandlerException,
-        URIValidationException, ApiErrorResponseException {
+        URIValidationException, ApiErrorResponseException, MapperException {
 
         CompanyReportApiData companyReportApiData = new CompanyReportApiData();
 

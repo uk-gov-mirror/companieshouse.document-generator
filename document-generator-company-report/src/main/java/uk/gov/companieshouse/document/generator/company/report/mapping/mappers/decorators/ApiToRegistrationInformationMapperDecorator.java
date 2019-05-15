@@ -2,6 +2,7 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import uk.gov.companieshouse.document.generator.company.report.descriptions.RetrieveApiEnumerationDescription;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
@@ -9,6 +10,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.SicCodes;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.Status;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,11 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
     @Qualifier("delegate")
     private ApiToRegistrationInformationMapper apiToRegistrationInformationMapper;
 
+    @Autowired
+    private RetrieveApiEnumerationDescription retrieveApiEnumerationDescription;
+
     @Override
-    public RegistrationInformation apiToRegistrationInformation(CompanyReportApiData companyReportApiData) {
+    public RegistrationInformation apiToRegistrationInformation(CompanyReportApiData companyReportApiData) throws IOException {
 
         RegistrationInformation registrationInformation =
             apiToRegistrationInformationMapper.apiToRegistrationInformation(companyReportApiData);
@@ -38,21 +43,25 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
         return registrationInformation;
     }
 
-    private Status setCompanyStatus(String companyStatus, String companyStatusDetail) {
+    private Status setCompanyStatus(String companyStatus, String companyStatusDetail) throws IOException {
+
         Status status = new Status();
 
-        if (companyStatus != null || !companyStatus.isEmpty()) {
-
+        if (companyStatus != null && !companyStatus.isEmpty()) {
+            status.setCompanyStatus(retrieveApiEnumerationDescription
+                .getApiEnumerationDescription("/constants.yml", "company_status", companyStatus));
         }
 
-        if (companyStatusDetail != null || !companyStatusDetail.isEmpty()) {
-
+        if (companyStatusDetail != null && !companyStatusDetail.isEmpty()) {
+            status.setCompanyStatusDetail(retrieveApiEnumerationDescription
+                .getApiEnumerationDescription("/constants.yml", "company_status_detail", companyStatusDetail));
         }
 
         return status;
     }
 
     private List<SicCodes> setNatureOfBusiness(String[] sicCodes) {
+
         List<SicCodes> listNatureOfBusiness = new ArrayList<>();
 
         return listNatureOfBusiness;
