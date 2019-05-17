@@ -3,6 +3,7 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.RetrieveApiEnumerationDescription;
+import uk.gov.companieshouse.document.generator.company.report.descriptions.config.ConstantsApiEnumeration;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
@@ -13,6 +14,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistrationInformationMapper {
 
@@ -22,6 +24,11 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
 
     @Autowired
     private RetrieveApiEnumerationDescription retrieveApiEnumerationDescription;
+
+    @Autowired
+    private ConstantsApiEnumeration constantsApiEnumeration;
+
+    private static final String CONSTANTS_YML_FILE_NAME = "constants.yml";
 
     @Override
     public RegistrationInformation apiToRegistrationInformation(CompanyReportApiData companyReportApiData) throws IOException {
@@ -49,26 +56,45 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
 
         if (companyStatus != null && !companyStatus.isEmpty()) {
             status.setCompanyStatus(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription("/constants.yml", "company_status", companyStatus));
+                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_status", companyStatus));
         }
 
         if (companyStatusDetail != null && !companyStatusDetail.isEmpty()) {
             status.setCompanyStatusDetail(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription("/constants.yml", "company_status_detail", companyStatusDetail));
+                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_status_detail", companyStatusDetail));
         }
 
         return status;
     }
 
-    private List<SicCodes> setNatureOfBusiness(String[] sicCodes) {
+    private List<SicCodes> setNatureOfBusiness(String[] sicCodes) throws IOException {
 
         List<SicCodes> listNatureOfBusiness = new ArrayList<>();
+
+        for (String sicCode : sicCodes) {
+            SicCodes codes = new SicCodes();
+            codes.setSicCodes(sicCode);
+            codes.setSicCodesDescription(retrieveApiEnumerationDescription
+                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "sic_descriptions", sicCode));
+            listNatureOfBusiness.add(codes);
+        }
 
         return listNatureOfBusiness;
     }
 
-    private CompanyType setCompanyType(String type, String subtype) {
+    private CompanyType setCompanyType(String type, String subtype) throws IOException {
+
         CompanyType companyType = new CompanyType();
+
+        if (type != null && !type.isEmpty()) {
+            companyType.setType(retrieveApiEnumerationDescription
+                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_type", type));
+        }
+
+        if (subtype != null && !subtype.isEmpty()) {
+            companyType.setSubtype(retrieveApiEnumerationDescription
+                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_subtype", subtype));
+        }
 
         return companyType;
     }
