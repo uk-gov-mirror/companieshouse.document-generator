@@ -2,14 +2,18 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToPreviousNamesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CompanyReportMapperDecorator implements CompanyReportMapper {
     
@@ -19,6 +23,9 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
     @Autowired
     private ApiToRegistrationInformationMapper apiToRegistrationInformationMapper;
+
+    @Autowired
+    private ApiToPreviousNamesMapper apiToPreviousNamesMapper;
     
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) throws MapperException {
@@ -26,8 +33,14 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         CompanyReport companyReport = companyReportMapper.mapCompanyReport(companyReportApiData);
         
         companyReport.setRegistrationInformation(setRegistrationInformation(companyReportApiData));
+
+        companyReport.setPreviousNames(setPreviousNames(companyReportApiData.getCompanyProfileApi().getPreviousCompanyNames()));
         
         return companyReport;
+    }
+
+    private List<PreviousNames> setPreviousNames(List<PreviousCompanyNamesApi> previousCompanyNames) {
+        return apiToPreviousNamesMapper.apiToPreviousNamesMapper(previousCompanyNames);
     }
 
     private RegistrationInformation setRegistrationInformation(CompanyReportApiData companyReportApiData) throws MapperException {

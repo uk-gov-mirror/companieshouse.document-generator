@@ -11,6 +11,8 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 
+import java.util.List;
+
 @JsonInclude(Include.NON_NULL)
 @JsonTypeName("company_report")
 @JsonTypeInfo(include = As.WRAPPER_OBJECT, use = Id.NAME)
@@ -20,7 +22,7 @@ public class CompanyReport {
     private RegistrationInformation registrationInformation;
 
     @JsonProperty("previous_names")
-    private PreviousNames previousNames;
+    private List<PreviousNames> previousNames;
 
     @JsonProperty("key_filing_dates")
     private KeyFilingDates keyFilingDates;
@@ -34,12 +36,12 @@ public class CompanyReport {
         this.registrationInformation = registrationInformation;
     }
 
-    public PreviousNames getPreviousNames() {
+    public List<PreviousNames> getPreviousNames() {
         return previousNames;
     }
 
     public void setPreviousNames(
-        PreviousNames previousNames) {
+        List<PreviousNames> previousNames) {
         this.previousNames = previousNames;
     }
 
