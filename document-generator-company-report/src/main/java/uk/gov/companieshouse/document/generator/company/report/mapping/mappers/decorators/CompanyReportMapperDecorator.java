@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToKeyFilingDatesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToPreviousNamesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 
@@ -26,6 +28,9 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
     @Autowired
     private ApiToPreviousNamesMapper apiToPreviousNamesMapper;
+
+    @Autowired
+    private ApiToKeyFilingDatesMapper apiToKeyFilingDatesMapper;
     
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) throws MapperException {
@@ -35,8 +40,14 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         companyReport.setRegistrationInformation(setRegistrationInformation(companyReportApiData));
 
         companyReport.setPreviousNames(setPreviousNames(companyReportApiData.getCompanyProfileApi().getPreviousCompanyNames()));
+
+        companyReport.setKeyFilingDates(setKeyFilingDates(companyReportApiData));
         
         return companyReport;
+    }
+
+    private KeyFilingDates setKeyFilingDates(CompanyReportApiData companyReportApiData) {
+        return apiToKeyFilingDatesMapper.apiToKeyFilingDates(companyReportApiData);
     }
 
     private List<PreviousNames> setPreviousNames(List<PreviousCompanyNamesApi> previousCompanyNames) {
