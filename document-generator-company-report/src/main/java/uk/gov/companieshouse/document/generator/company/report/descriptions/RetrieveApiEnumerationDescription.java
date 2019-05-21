@@ -3,6 +3,7 @@ package uk.gov.companieshouse.document.generator.company.report.descriptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.config.ConstantsApiEnumeration;
+import uk.gov.companieshouse.document.generator.company.report.descriptions.config.FilingHistoryDescriptionsApiEnumerations;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -16,13 +17,16 @@ public class RetrieveApiEnumerationDescription {
     @Autowired
     private ConstantsApiEnumeration constantsApiEnumeration;
 
+    @Autowired
+    private FilingHistoryDescriptionsApiEnumerations filingHistoryDescriptionsApiEnumerations;
+
     private static final Logger LOG = LoggerFactory.getLogger(MODULE_NAME_SPACE);
 
     public String getApiEnumerationDescription(String fileName, String identifier, String descriptionValue) {
 
         String description = "";
 
-        Map<String, Object> apiEnumeration =  constantsApiEnumeration.getConstants();
+        Map<String, Object> apiEnumeration =  getApiEnumeration(fileName);
 
             Map<String, Object> filteredDescriptions = (Map<String, Object>) getDescriptionsValue(apiEnumeration,
                 identifier, fileName);
@@ -46,5 +50,20 @@ public class RetrieveApiEnumerationDescription {
                         + fileName + " for key: " + key);
                 return null;
             });
+    }
+
+
+    //TODO refactor method as temporary implementation just to populate the api enumerations
+    private Map<String, Object> getApiEnumeration(String apiEnumerationFile) {
+
+        if (apiEnumerationFile == "constants.yml") {
+            return constantsApiEnumeration.getConstants();
+        }
+
+        if (apiEnumerationFile == "filing_history_descriptions.yml") {
+            return filingHistoryDescriptionsApiEnumerations.getFilingHistoryDescriptions();
+        }
+
+        return null;
     }
 }

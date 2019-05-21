@@ -3,15 +3,18 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
+import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToKeyFilingDatesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToPreviousNamesMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRecentFilingHistoryMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 
 import java.io.IOException;
@@ -31,6 +34,9 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
     @Autowired
     private ApiToKeyFilingDatesMapper apiToKeyFilingDatesMapper;
+
+    @Autowired
+    private ApiToRecentFilingHistoryMapper apiToRecentFilingHistoryMapper;
     
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) throws MapperException {
@@ -42,8 +48,14 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         companyReport.setPreviousNames(setPreviousNames(companyReportApiData.getCompanyProfileApi().getPreviousCompanyNames()));
 
         companyReport.setKeyFilingDates(setKeyFilingDates(companyReportApiData));
+
+        companyReport.setRecentFilingHistory(setRecentFilingHistory(companyReportApiData.getFilingHistoryApi().getItems()));
         
         return companyReport;
+    }
+
+    private List<RecentFilingHistory> setRecentFilingHistory(List<FilingApi> items) {
+        return apiToRecentFilingHistoryMapper.apiToRecentFilingHistoryMapper(items);
     }
 
     private KeyFilingDates setKeyFilingDates(CompanyReportApiData companyReportApiData) {

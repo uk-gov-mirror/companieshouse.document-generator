@@ -28,7 +28,7 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
     @Autowired
     private ConstantsApiEnumeration constantsApiEnumeration;
 
-    private static final String CONSTANTS_YML_FILE_NAME = "constants.yml";
+    private static final String CONSTANTS = "constants.yml";
 
     @Override
     public RegistrationInformation apiToRegistrationInformation(CompanyReportApiData companyReportApiData) throws IOException {
@@ -56,12 +56,12 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
 
         if (companyStatus != null && !companyStatus.isEmpty()) {
             status.setCompanyStatus(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_status", companyStatus));
+                .getApiEnumerationDescription(CONSTANTS, "company_status", companyStatus));
         }
 
         if (companyStatusDetail != null && !companyStatusDetail.isEmpty()) {
             status.setCompanyStatusDetail(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_status_detail", companyStatusDetail));
+                .getApiEnumerationDescription(CONSTANTS, "company_status_detail", companyStatusDetail));
         }
 
         return status;
@@ -75,7 +75,7 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
             SicCodes codes = new SicCodes();
             codes.setSicCodes(sicCode);
             codes.setSicCodesDescription(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "sic_descriptions", sicCode));
+                .getApiEnumerationDescription(CONSTANTS, "sic_descriptions", sicCode));
             listNatureOfBusiness.add(codes);
         }
 
@@ -88,12 +88,12 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
 
         if (type != null && !type.isEmpty()) {
             companyType.setType(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_type", type));
+                .getApiEnumerationDescription(CONSTANTS, "company_type", type));
         }
 
         if (subtype != null && !subtype.isEmpty()) {
             companyType.setSubtype(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription(CONSTANTS_YML_FILE_NAME, "company_subtype", subtype));
+                .getApiEnumerationDescription(CONSTANTS, "company_subtype", subtype));
         }
 
         return companyType;
