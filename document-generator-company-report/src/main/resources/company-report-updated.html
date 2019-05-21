@@ -268,7 +268,7 @@
 <div>
   <div class="page">
     {{$charsPerPage := 7000}}
-    {{setValue "page-number" 0}}
+    {{setValue "page-number" 1}}
     <div id="CompanyRecordHeader" class="page margin-xx-large">
       <div class="header">
         <h1 class="text--center">
@@ -374,32 +374,35 @@
         <td>Status:</td>
         <td> {{index .company_report.company_registration_information.status "company_status"}}</td>
       </tr>
-      <tr>
+
       <tr>
         <td>Nature Of Business (SIC):</td>
       <td>
         {{range .company_report.company_registration_information.nature_of_business}}
-
-        <tr> {{.sic_codes}}</tr>
+        {{.sic_codes}} - {{.sic_codes_description}}
+        <br>
       {{end}}
-
       </td>
+      </tr>
 
+      {{if $companyRegistration.number_of_charges}}
       <tr>
         <td>Number Of Charges:</td>
         <td> {{$companyRegistration.number_of_charges}}</td>
       </tr>
+
+      {{end}}
       <tr>
         <td></td>
       </tr>
       <tr>
-        <td><span style="font-weight:bold"><h1>Previous Names</h1></span></td>
+        <td><h1>Previous Names</h1></td>
       </tr>
       <tr>
 
         {{$prevCompanyNames := .company_report.previous_names}}
 
-        <td><span style="font-weight:bold">Date of Change</span></td>
+        <td><h1>Date of Change</h1></td>
         <td><h1>Previous Name</h1></td>
 
         {{- range $prevCompanyNames -}}
@@ -413,11 +416,11 @@
         <td><h1>Key Filing Dates</h1></td>
       </tr>
 
-      {{$keyFilingDates := $companyRegistration.key_filing_dates}}
+      {{$keyFilingDates := .company_report.key_filing_dates}}
 
       <tr>
         <td>Accounting Reference Date:</td>
-        <td>{{$keyFilingDates.accounting_reference_date}}</td>
+        <td>{{index $keyFilingDates.accounting_reference_date "day"}}/{{index $keyFilingDates.accounting_reference_date "month"}}</td>
       </tr>
       <tr>
         <td>Last Accounts Made Up To:</td>
