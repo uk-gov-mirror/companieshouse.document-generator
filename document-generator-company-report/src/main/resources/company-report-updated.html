@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-{{$companyProfile := .company_report.company_profile}}
+{{$companyRegistration := .company_report.company_registration_information}}
 {{$filingHistory:= .company_report.filing_history}}
 {{$officers:= .company_report.officers}}
 <head>
-    <meta charset="UTF-8">
-    <title>{{$companyProfile.company_name}}</title>
-    <style type="text/css">
+  <meta charset="UTF-8">
+  <title>{{$companyRegistration.company_name}}</title>
+  <style type="text/css">
 	   body {
 	       font-size: 12px;
 	   }
@@ -261,339 +261,388 @@
           * {
 	  	   position: relative;
 	   }
-    </style>
+
+  </style>
 </head>
 <body>
 <div>
-    <div class="page">
+  <div class="page">
     {{$charsPerPage := 7000}}
-    {{setValue "page-number" 0}}
+    {{setValue "page-number" 1}}
     <div id="CompanyRecordHeader" class="page margin-xx-large">
-        <div class="header">
-            <h1 class="text--center">
-                The Company Record for:
-                <br/>
-                {{$companyProfile.company_name}}
-                <br/>
-                {{$companyProfile.company_number}}
-            </h1>
-
-            <h2 class="text--center">
-                Created: 01/05/2019 09:28:01
-            </h2>
-        </div>
-        <h2 class="text--center margin-large" >
-            Companies House is a registry of corporate information. We carry out basic checks to make sure that documents have
-            been fully completed and signed, but we do not have the statutory power or capability to verify the accuracy of the
-            information that corporate entities send to us. We accept all information that such entities deliver to us in good faith and
-            place it on the public record. The fact that the information has been placed on the public record should not be taken to
-            indicate that Companies House has verified or validated it in any way.
-        </h2>
-    </div>
-</div>
-</div>
-
-
-    <!--COMPANY PROFILE-->
-<div class="page">
-    {{$charsPerPage := 7000}}
-    {{getValue "page-number"}}
-<div id="CompanyRegisterInfoHeader" class="page margin-xx-large">
-    <div class="header">
+      <div class="header">
         <h1 class="text--center">
-            Company Register Information
-            <br/>
+          The Company Record for:
+          <br/>
+          {{$companyRegistration.company_name}}
+          <br/>
+          {{$companyRegistration.company_number}}
         </h1>
+
+        <h2 class="text--center">
+          Created: 01/05/2019 09:28:01
+        </h2>
+      </div>
+      <h2 class="text--center margin-large">
+        Companies House does not verify the accuracy of the information filed.
+      </h2>
+    </div>
+  </div>
+</div>
+
+
+<!--COMPANY PROFILE-->
+<div class="page">
+  {{$charsPerPage := 7000}}
+  {{getValue "page-number"}}
+  <div id="CompanyRegisterInfoHeader" class="page margin-xx-large">
+    <div class="header">
+      <h1 class="text--center">
+        Company Register Information
+        <br/>
+      </h1>
     </div>
 
     <table>
-        <tr>
-            <td>Company Number:</td>
-            <td>{{$companyProfile.company_number}}</td>
-        </tr>
-        <tr>
-            <td>Company Name:</td>
-            <td>{{$companyProfile.company_name}}</td>
-        </tr>
-        <tr>
-            <td>Registered Office:</td>
-            <td>{{$companyProfile.registered_office_address}}</td>
-        </tr>
-        <tr>
-            <td>Company Type:</td>
-            <td>{{$companyProfile.type}}</td>
-        </tr>
-        <tr>
-            <td>Country of Origin:</td>
-            <td>{{$companyProfile.jurisdiction}}</td>
-        </tr>
-        <tr>
-            <td>Status:</td>
-            <td>{{$companyProfile.company_status}}</td>
-        </tr>
-        <tr>
-        <tr>
-            <td>Nature Of Business (SIC):</td>
-            <td> {{$companyProfile.sic_codes}}</td>
-        </tr>
-        <tr>
-            <td>Number Of Charges:</td>
-            <td> !! USE CHARGES API !! </td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span style="font-weight:bold"><h1>Previous Names</h1></span></td>
-        </tr>
-        <tr>
+      <tr>
+        <td>Company Number:</td>
+        <td>{{$companyRegistration.company_number}}</td>
+      </tr>
+      <tr>
+        <td>Company Name:</td>
+        <td>{{$companyRegistration.company_name}}</td>
+      </tr>
 
-            {{$prevCompanyNames := $companyProfile.previous_company_names}}
+      {{if $roa := .company_report.company_registration_information.registered_office}}
+      <tr>
+        <td>Registered Office:</td>
+        <td>
 
-                <td><span style="font-weight:bold">Date of Change</span></td>
-                <td><h1>Previous Name</h1></td>
+          {{if $roa.care_of}}
+            {{index .company_report.company_registration_information.registered_office "care_of"}}
+             <br>
+          {{end}}
 
-                {{- range $prevCompanyNames -}}
-                <tr>
-                     <td>{{.effective_from}} </td>
-                    <td>{{.name}} </td>
-                </tr>
-            {{end}}
+          {{if $roa.po_box}}
+              {{index .company_report.company_registration_information.registered_office "po_box"}}
+          <br>
+          {{end}}
+
+          {{if $roa.premises}}
+              {{index .company_report.company_registration_information.registered_office "premises"}}
+            <br>
+          {{end}}
+
+          {{if $roa.address_line_1}}
+              {{index .company_report.company_registration_information.registered_office "address_line_1"}}
+            <br>
+          {{end}}
+
+          {{if $roa.address_line_2}}
+              {{index .company_report.company_registration_information.registered_office "address_line_2"}}
+           <br>
+          {{end}}
+
+          {{if $roa.locality}}
+              {{index .company_report.company_registration_information.registered_office "locality"}}
+            <br>
+          {{end}}
+
+          {{if $roa.region}}
+              {{index .company_report.company_registration_information.registered_office "region"}}
+           <br>
+          {{end}}
+
+          {{if $roa.country}}
+              {{index .company_report.company_registration_information.registered_office "country"}}
+            <br>
+          {{end}}
+
+          {{if $roa.postal_code}}
+              {{index .company_report.company_registration_information.registered_office "postal_code"}}
+          {{end}}
+        </td>
+      </tr>
+      {{end}}
+
+      <tr>
+        <td>Company Type:</td>
+        <td> {{index .company_report.company_registration_information.company_type "type"}}</td>
+      </tr>
+
+      <tr>
+        <td>Status:</td>
+        <td> {{index .company_report.company_registration_information.status "company_status"}}</td>
+      </tr>
+
+      <tr>
+        <td>Nature Of Business (SIC):</td>
+      <td>
+        {{range .company_report.company_registration_information.nature_of_business}}
+        {{.sic_codes}} - {{.sic_codes_description}}
         <br>
-        <tr>
-            <td><h1>Key Filing Dates</h1></td>
-        </tr>
-        <tr>
-            <td>Accounting Reference Date: </td>
-            <td>{{$companyProfile.accounts.accounting_reference_date}}</td>
-        </tr>
-        <tr>
-            <td>Last Accounts Made Up To: </td>
-            <td>{{$companyProfile.accounts.last_accounts}}</td>
-        </tr>
-        <tr>
-            <td>Next Accounts Due: </td>
-            <td>{{$companyProfile.accounts.next_accounts}}</td>
-        </tr>
-        <tr>
-            <td>Last Confirmation Statement Date: </td>
-            <td>{{$companyProfile.confirmation_statement.last_made_up_to}}</td>
-        </tr>
-        <tr>
-            <td>Next Confirmation Statement Due: </td>
-            <td>{{$companyProfile.confirmation_statement.next_due}}</td>
-        </tr>
-        <br>
-        <tr>
-            <td>Last members list: </td>
-            <td>{{$companyProfile.last_full_members_list_date}}</td>
-        </tr>
-        <tr>
-            <td>Last Bulk shareholders List: </td>
-            <td> ????????????? </td>
-        </tr>
+      {{end}}
+      </td>
+      </tr>
+
+      {{if $companyRegistration.number_of_charges}}
+      <tr>
+        <td>Number Of Charges:</td>
+        <td> {{$companyRegistration.number_of_charges}}</td>
+      </tr>
+
+      {{end}}
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td><h1>Previous Names</h1></td>
+      </tr>
+      <tr>
+
+        {{$prevCompanyNames := .company_report.previous_names}}
+
+        <td><h1>Date of Change</h1></td>
+        <td><h1>Previous Name</h1></td>
+
+        {{- range $prevCompanyNames -}}
+      <tr>
+        <td>{{.date_of_change}}</td>
+        <td>{{.previous_name}}</td>
+      </tr>
+      {{end}}
+      <br>
+      <tr>
+        <td><h1>Key Filing Dates</h1></td>
+      </tr>
+
+      {{$keyFilingDates := .company_report.key_filing_dates}}
+
+      <tr>
+        <td>Accounting Reference Date:</td>
+        <td>{{index $keyFilingDates.accounting_reference_date "day"}}/{{index $keyFilingDates.accounting_reference_date "month"}}</td>
+      </tr>
+      <tr>
+        <td>Last Accounts Made Up To:</td>
+        <td>{{$keyFilingDates.last_accounts_made_up_to}}</td>
+      </tr>
+      <tr>
+        <td>Next Accounts Due:</td>
+        <td>{{$keyFilingDates.next_accounts_due}}</td>
+      </tr>
+      <tr>
+        <td>Last Confirmation Statement Date:</td>
+        <td>{{$keyFilingDates.last_confirmation_statement}}</td>
+      </tr>
+      <tr>
+        <td>Next Confirmation Statement Due:</td>
+        <td>{{$keyFilingDates.next_confirmation_statement}}</td>
+      </tr>
+      <br>
+      <tr>
+        <td>Last members list:</td>
+        <td>{{$keyFilingDates.last_members_list}}</td>
+      </tr>
     </table>
+  </div>
 </div>
-</div>
 
 
-    <!--COMPANY STATUS DETAILS-->
+<!--COMPANY STATUS DETAILS-->
 
-    <div class="page">
-    {{$charsPerPage := 7000}}
-    {{incValue "page-number"}}
-        {{getValue "page-number"}}
-<div id="CompanyStatusDetailsHeader" class="page margin-xx-large">
+<div class="page">
+  {{$charsPerPage := 7000}}
+  {{incValue "page-number"}}
+  {{getValue "page-number"}}
+  <div id="CompanyStatusDetailsHeader" class="page margin-xx-large">
     <div class="header">
-        <h1 class="text--center">
-            Company Status Details
-            <br/>
-        </h1>
+      <h1 class="text--center">
+        Company Status Details
+        <br/>
+      </h1>
     </div>
 
 
     <br>
 
-    <p> Status: {{$companyProfile.company_status}}</p>
+    <p> Status: {{$companyRegistration.company_status}}</p>
 
-<br>
+    <br>
 
-<table>
-    <tr>
+    <table>
+      <tr>
         <td>Case Number:</td>
         <td>**case number**</td>
-    </tr>
-    <tr>
+      </tr>
+      <tr>
         <td>Case Type:</td>
         <td>**case type**</td>
-    </tr>
-    <tr></tr>
-    <tr>
+      </tr>
+      <tr></tr>
+      <tr>
         <td>Appointment Date:</td>
         <td>**appointment date**</td>
-    </tr>
+      </tr>
 
 
-    <p> other details dependent on company status - more info required</p>
-</table>
+      <p> other details dependent on company status - more info required</p>
+    </table>
 
+  </div>
 </div>
-    </div>
 
 
+<!--CURRENT APPOINTMENTS-->
 
-    <!--CURRENT APPOINTMENTS-->
-
-    <div class="page">
-    {{$charsPerPage := 7000}}
-        {{incValue "page-number"}}
-        {{getValue "page-number"}}
-<div id="currentAppointmentsHeader" class="page margin-xx-large">
+<div class="page">
+  {{$charsPerPage := 7000}}
+  {{incValue "page-number"}}
+  {{getValue "page-number"}}
+  <div id="currentAppointmentsHeader" class="page margin-xx-large">
     <div class="header">
-        <h1 class="text--center">
-            Current Appointments
-            <br/>
-        </h1>
+      <h1 class="text--center">
+        Current Appointments
+        <br/>
+      </h1>
     </div>
 
     <br>
-<p><b> Number of current appointments :</b> {{$officers.active_count}}</p>
+    <p><b> Number of current appointments :</b> {{$officers.active_count}}</p>
 
-<br>
+    <br>
 
-<table>
-    <tr>
+    <table>
+      <tr>
         <td>{{$officers.occupation}}</td>
         <td>{{$officers.name}}</td>
-    </tr>
-    <tr>
+      </tr>
+      <tr>
         <td><b>Appointed:</b></td>
         <td>{{$officers.appointed_on}}</td>
 
 
-        <td><b>Date of Birth:</b> >{{$officers.date_of_birth}} </td>
+        <td><b>Date of Birth:</b> >{{$officers.date_of_birth}}</td>
 
-    </tr>
-    <tr></tr>
-    <tr>
+      </tr>
+      <tr></tr>
+      <tr>
         <td><b>No. of appointments:</b></td>
         <td>** number of appointments?? **</td>
-    </tr>
-    <tr>
+      </tr>
+      <tr>
         <td><b>Address:</b></td>
-    <td>
-    <tr>{{$officers.addressApi.care_of}}</tr>
-    <tr>{{$officers.addressApi.po_box}}</tr>
-    <tr>{{$officers.addressApi.address_line_1}}</tr>
-    <tr>{{$officers.addressApi.address_line_2}}</tr>
-    <tr>{{$officers.addressApi.locality}}</tr>
-    <tr>{{$officers.addressApi.region}}</tr>
-    <tr>{{$officers.addressApi.country}}</tr>
-    <tr>{{$officers.addressApi.postal_code}}</tr>
+        <td>
+      <tr>{{$officers.addressApi.care_of}}</tr>
+      <tr>{{$officers.addressApi.po_box}}</tr>
+      <tr>{{$officers.addressApi.address_line_1}}</tr>
+      <tr>{{$officers.addressApi.address_line_2}}</tr>
+      <tr>{{$officers.addressApi.locality}}</tr>
+      <tr>{{$officers.addressApi.region}}</tr>
+      <tr>{{$officers.addressApi.country}}</tr>
+      <tr>{{$officers.addressApi.postal_code}}</tr>
 
-    </td>
-    </tr>
+      </td>
+      </tr>
 
-    <tr>
-        <td>Country/State of Residence: </td>
-        <td>{{$officers.addressApi.country_of_residence}} </td>
-    </tr>
+      <tr>
+        <td>Country/State of Residence:</td>
+        <td>{{$officers.addressApi.country_of_residence}}</td>
+      </tr>
 
-</table>
+    </table>
 
-</div>
+  </div>
 
-    <!--PSC-->
+  <!--PSC-->
 
-        <div class="page">
+  <div class="page">
     {{$charsPerPage := 7000}}
-            {{incValue "page-number"}}
-            {{getValue "page-number"}}
+    {{incValue "page-number"}}
+    {{getValue "page-number"}}
     <div id="pscAppointmentsHeader" class="page margin-xx-large">
-        <div class="header">
-            <h1 class="text--center">
-               PSC Appointments ?
-                <br/>
-            </h1>
-        </div>
+      <div class="header">
+        <h1 class="text--center">
+          PSC Appointments ?
+          <br/>
+        </h1>
+      </div>
 
-        <br>
-<p><b> Number of current psc appointments :</b> ** NUMBER OF CURRENT PSC APPOINTMENTS **</p>
+      <br>
+      <p><b> Number of current psc appointments :</b> ** NUMBER OF CURRENT PSC APPOINTMENTS **</p>
 
-<br>
+      <br>
 
-<p> ADD LIST OF PSC APPOINTMENTS</p>
+      <p> ADD LIST OF PSC APPOINTMENTS</p>
 
     </div>
-
 
 
     <!--MORTGAGE CHARGE DETAILS-->
 
-            <div class="page">
-    {{$charsPerPage := 7000}}
-                {{incValue "page-number"}}
-                {{getValue "page-number"}}
-    <div id="mortgageChargeHeader" class="page margin-xx-large">
+    <div class="page">
+      {{$charsPerPage := 7000}}
+      {{incValue "page-number"}}
+      {{getValue "page-number"}}
+      <div id="mortgageChargeHeader" class="page margin-xx-large">
         <div class="header">
-            <h1 class="text--center">
-                Mortgage Charge Details
-                <br/>
-            </h1>
+          <h1 class="text--center">
+            Mortgage Charge Details
+            <br/>
+          </h1>
         </div>
 
         <br>
-<p><b> Number of Charges :</b> ** NUMBER OF CHARGES **</p>
-
-<br>
-
-<p> ADD LIST OF CHARGES</p>
-
-    </div>
-
-
-    <!--FILING HISTORY-->
-
-     <div class="page">
-    {{$charsPerPage := 7000}}
-         {{incValue "page-number"}}
-         {{getValue "page-number"}}
-    <div id="filingHistoryHeader" class="page margin-xx-large">
-        <div class="header">
-            <h1 class="text--center">
-                Recent Filing History
-                <br/>
-            </h1>
-        </div>
+        <p><b> Number of Charges :</b> ** NUMBER OF CHARGES **</p>
 
         <br>
-<p><b> Documents filed since :</b> {{$companyProfile.date_of_creation}}</p>
 
-<table>
-    <tr></tr>
-    <tr>
-        <td><b>DATE:</b></td>
-        <td><b>FORM:</b></td>
-        <td><b>DESCRIPTION:</b></td>
-    </tr>
+        <p> ADD LIST OF CHARGES</p>
 
-    {{$items := $filingHistory.items}}
+      </div>
 
-    {{- range $items -}}
 
-    <tr>
-        <td>{{.date}}</td>
-        <td>{{.type}}</td>
-        <td>{{.description}}</td>
-    </tr>
+      <!--FILING HISTORY-->
 
-    {{end}}
- <br>
+      <div class="page">
+        {{$charsPerPage := 7000}}
+        {{incValue "page-number"}}
+        {{getValue "page-number"}}
+        <div id="filingHistoryHeader" class="page margin-xx-large">
+          <div class="header">
+            <h1 class="text--center">
+              Recent Filing History
+              <br/>
+            </h1>
+          </div>
 
-    <p> **excludes share allotment documents????</p>
+          <br>
+          <p><b> Documents filed since :</b> {{$companyRegistration.date_of_creation}}</p>
 
-</table>
-    </div>
+          <table>
+            <tr></tr>
+            <tr>
+              <td><b>DATE:</b></td>
+              <td><b>FORM:</b></td>
+              <td><b>DESCRIPTION:</b></td>
+            </tr>
+
+            {{$items := $filingHistory.items}}
+
+            {{- range $items -}}
+
+            <tr>
+              <td>{{.date}}</td>
+              <td>{{.type}}</td>
+              <td>{{.description}}</td>
+            </tr>
+
+            {{end}}
+            <br>
+
+            <p> **excludes share allotment documents????</p>
+
+          </table>
+        </div>
 
 
 </body>
