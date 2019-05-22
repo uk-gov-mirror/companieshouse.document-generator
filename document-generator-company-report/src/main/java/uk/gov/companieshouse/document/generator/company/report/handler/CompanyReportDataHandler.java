@@ -116,35 +116,35 @@ public class CompanyReportDataHandler {
                 if(pair.getKey() == "filing_history") {
                     errorString = "filing history";
                     FilingHistoryApi filingHistoryApi = apiClient.filingHistory()
-                        .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/filing-history").execute();
+                        .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/filing-history").execute().getData();
                     companyReportApiData.setFilingHistoryApi(filingHistoryApi);
                 }
 
                 else if (pair.getKey() == "insolvency") {
                     errorString ="insolvency";
                     InsolvencyApi insolvencyApi = apiClient.insolvency()
-                        .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/insolvency").execute();
+                        .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/insolvency").execute().getData();
                     companyReportApiData.setInsolvencyApi(insolvencyApi);
                 }
 
                 else if(pair.getKey() == "officers") {
                     errorString = "officers";
                     OfficersApi officersApi = apiClient.officers()
-                        .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers").execute();
+                        .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers").execute().getData();
                     companyReportApiData.setOfficersApi(officersApi);
                 }
 
                 else if(pair.getKey() == "charges") {
                     errorString = "charges";
                     ChargesApi chargesApi = apiClient.charges()
-                        .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/charges").execute();
+                        .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/charges").execute().getData();
                     companyReportApiData.setChargesApi(chargesApi);
                 }
 
                 else if(pair.getKey() == "persons_with_significant_control_statements") {
                     errorString = "persons with significant control statements";
                     PscsApi pscsApi = apiClient.pscs().list(GET_COMPANY_URI.expand(companyNumber).toString() +
-                            "/persons-with-significant-control-statements").execute();
+                            "/persons-with-significant-control-statements").execute().getData();
                     companyReportApiData.setPscsApi(pscsApi);
                 }
             } catch (ApiErrorResponseException e) {

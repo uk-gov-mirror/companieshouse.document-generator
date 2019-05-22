@@ -3,6 +3,8 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.model.do
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.items.AccountingReferenceDate;
 
 import java.time.LocalDate;
@@ -13,21 +15,26 @@ public class KeyFilingDates {
     @JsonProperty("accounting_reference_date")
     private AccountingReferenceDate accountingReferenceDate;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("last_accounts_made_up_to")
     private LocalDate lastAccountsMadeUpTo;
 
     @JsonProperty("accounts_type")
     private String accountsType;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("next_accounts_due")
     private LocalDate nextAccountsDue;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("last_confirmation_statement")
     private LocalDate lastConfirmationStatement;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("next_confirmation_statement")
     private LocalDate nextConfirmationStatement;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("last_members_list")
     private LocalDate lastMembersList;
 

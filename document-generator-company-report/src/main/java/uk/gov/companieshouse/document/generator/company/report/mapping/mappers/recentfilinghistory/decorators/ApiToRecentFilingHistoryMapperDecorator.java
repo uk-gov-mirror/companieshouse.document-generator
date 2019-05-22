@@ -1,11 +1,11 @@
-package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.decorators;
+package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.decorators;
 
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.RetrieveApiEnumerationDescription;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRecentFilingHistoryMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.ApiToRecentFilingHistoryMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
 
 import java.util.ArrayList;

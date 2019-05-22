@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
@@ -30,6 +31,9 @@ public class CompanyReport {
 
     @JsonProperty("recent_filing_history")
     private List<RecentFilingHistory> recentFilingHistory;
+
+    @JsonProperty("company_status_detail")
+    private CompanyStatusDetail companyStatusDetail;
 
     public RegistrationInformation getRegistrationInformation() {
         return registrationInformation;
@@ -65,5 +69,14 @@ public class CompanyReport {
     public void setRecentFilingHistory(
         List<RecentFilingHistory> recentFilingHistory) {
         this.recentFilingHistory = recentFilingHistory;
+    }
+
+    public CompanyStatusDetail getCompanyStatusDetail() {
+        return companyStatusDetail;
+    }
+
+    public void setCompanyStatusDetail(
+        CompanyStatusDetail companyStatusDetail) {
+        this.companyStatusDetail = companyStatusDetail;
     }
 }

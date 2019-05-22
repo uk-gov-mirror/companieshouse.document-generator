@@ -1,10 +1,10 @@
-package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.decorators;
+package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation.decorators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.RetrieveApiEnumerationDescription;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.config.ConstantsApiEnumeration;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.CompanyType;
@@ -14,7 +14,6 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistrationInformationMapper {
 

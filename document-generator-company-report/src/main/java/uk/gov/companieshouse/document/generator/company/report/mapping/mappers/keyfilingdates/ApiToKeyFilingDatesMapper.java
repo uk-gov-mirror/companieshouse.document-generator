@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.document.generator.company.report.mapping.mappers;
+package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.keyfilingdates;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

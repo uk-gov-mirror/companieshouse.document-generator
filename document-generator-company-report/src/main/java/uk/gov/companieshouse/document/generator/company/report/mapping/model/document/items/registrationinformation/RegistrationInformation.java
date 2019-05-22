@@ -3,6 +3,8 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.model.do
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.Status;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.CompanyType;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.items.RegisteredOffice;
@@ -20,6 +22,7 @@ public class RegistrationInformation {
     @JsonProperty("company_name")
     private String companyName;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("date_of_incorporation")
     private LocalDate dateOfIncorporation;
 

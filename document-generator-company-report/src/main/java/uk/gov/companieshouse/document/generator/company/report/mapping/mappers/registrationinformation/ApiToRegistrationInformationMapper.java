@@ -1,11 +1,11 @@
-package uk.gov.companieshouse.document.generator.company.report.mapping.mappers;
+package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation;
 
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.springframework.web.context.annotation.RequestScope;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.decorators.ApiToRegistrationInformationMapperDecorator;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation.decorators.ApiToRegistrationInformationMapperDecorator;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 

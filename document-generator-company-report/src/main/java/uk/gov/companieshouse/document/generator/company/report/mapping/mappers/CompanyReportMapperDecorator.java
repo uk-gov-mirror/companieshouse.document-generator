@@ -1,17 +1,20 @@
-package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.decorators;
+package uk.gov.companieshouse.document.generator.company.report.mapping.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
+import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToKeyFilingDatesMapper;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToPreviousNamesMapper;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRecentFilingHistoryMapper;
-import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.ApiToRegistrationInformationMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.companystatusdetail.ApiToCompanyStatusMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.keyfilingdates.ApiToKeyFilingDatesMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.previousnames.ApiToPreviousNamesMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.ApiToRecentFilingHistoryMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
@@ -37,6 +40,9 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
     @Autowired
     private ApiToRecentFilingHistoryMapper apiToRecentFilingHistoryMapper;
+
+    @Autowired
+    private ApiToCompanyStatusMapper apiToCompanyStatusMapper;
     
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) throws MapperException {
@@ -50,8 +56,14 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         companyReport.setKeyFilingDates(setKeyFilingDates(companyReportApiData));
 
         companyReport.setRecentFilingHistory(setRecentFilingHistory(companyReportApiData.getFilingHistoryApi().getItems()));
+
+        companyReport.setCompanyStatusDetail(setCompanyStatusDetails(companyReportApiData.getInsolvencyApi()));
         
         return companyReport;
+    }
+
+    private CompanyStatusDetail setCompanyStatusDetails(InsolvencyApi insolvencyApi) {
+        return apiToCompanyStatusMapper.apiToCompanyStatusMapper(insolvencyApi);
     }
 
     private List<RecentFilingHistory> setRecentFilingHistory(List<FilingApi> items) {
