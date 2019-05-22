@@ -27,7 +27,7 @@ public class CompanyService {
         String uri = GET_COMPANY_URI.expand(companyNumber).toString();
 
         try {
-            companyProfileApi = apiClient.company().get(uri).execute();
+            companyProfileApi = apiClient.company().get(uri).execute().getData();
         } catch (
             ApiErrorResponseException e) {
 
