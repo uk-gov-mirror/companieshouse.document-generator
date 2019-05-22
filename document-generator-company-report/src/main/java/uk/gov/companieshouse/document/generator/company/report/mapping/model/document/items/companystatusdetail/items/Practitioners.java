@@ -1,11 +1,15 @@
 package uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.items;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.common.Address;
 
 import java.time.LocalDate;
 
+@JsonInclude(Include.NON_NULL)
 public class Practitioners {
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
