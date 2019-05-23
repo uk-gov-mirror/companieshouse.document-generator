@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
 import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
+import uk.gov.companieshouse.api.model.officers.OfficersApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.companystatusdetail.ApiToCompanyStatusMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.currentappointments.ApiToCurrentAppointmentsMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.keyfilingdates.ApiToKeyFilingDatesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.previousnames.ApiToPreviousNamesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.ApiToRecentFilingHistoryMapper;
@@ -15,6 +17,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.C
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.CurrentAppointments;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
@@ -43,23 +46,47 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
     @Autowired
     private ApiToCompanyStatusMapper apiToCompanyStatusMapper;
+
+    @Autowired
+    private ApiToCurrentAppointmentsMapper apiToCurrentAppointmentsMapper;
     
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) throws MapperException {
         
         CompanyReport companyReport = companyReportMapper.mapCompanyReport(companyReportApiData);
-        
-        companyReport.setRegistrationInformation(setRegistrationInformation(companyReportApiData));
 
-        companyReport.setPreviousNames(setPreviousNames(companyReportApiData.getCompanyProfileApi().getPreviousCompanyNames()));
+        if (companyReportApiData.getCompanyProfileApi() != null) {
 
-        companyReport.setKeyFilingDates(setKeyFilingDates(companyReportApiData));
+            companyReport.setRegistrationInformation(setRegistrationInformation(companyReportApiData));
 
-        companyReport.setRecentFilingHistory(setRecentFilingHistory(companyReportApiData.getFilingHistoryApi().getItems()));
+            if(companyReportApiData.getCompanyProfileApi().getPreviousCompanyNames() != null) {
+                companyReport.setPreviousNames(setPreviousNames(companyReportApiData.getCompanyProfileApi().getPreviousCompanyNames()));
+            }
 
-        companyReport.setCompanyStatusDetail(setCompanyStatusDetails(companyReportApiData.getInsolvencyApi()));
+            if(companyReportApiData.getCompanyProfileApi().getAccounts() != null) {
+                companyReport.setKeyFilingDates(setKeyFilingDates(companyReportApiData));
+            }
+
+            if(companyReportApiData.getFilingHistoryApi() != null) {
+                companyReport.setRecentFilingHistory(setRecentFilingHistory(companyReportApiData.getFilingHistoryApi().getItems()));
+            }
+
+            if (companyReportApiData.getInsolvencyApi() != null) {
+                companyReport.setCompanyStatusDetail(setCompanyStatusDetails(companyReportApiData.getInsolvencyApi()));
+            }
+
+            companyReport.setCurrentAppointments(setCurrentAppointments(companyReportApiData.getOfficersApi()));
+        }
         
         return companyReport;
+    }
+
+    private CurrentAppointments setCurrentAppointments(OfficersApi officersApi) throws MapperException {
+        try {
+            return apiToCurrentAppointmentsMapper.mapCurrentAppointments(officersApi);
+        } catch (MapperException e) {
+            throw new MapperException("An error occurred when mapping to current appointments", e);
+        }
     }
 
     private CompanyStatusDetail setCompanyStatusDetails(InsolvencyApi insolvencyApi) {
@@ -82,7 +109,7 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         try {
             return apiToRegistrationInformationMapper.apiToRegistrationInformation(companyReportApiData);
         } catch (IOException e) {
-            throw new MapperException("An error occured when mapping to registration information", e);
+            throw new MapperException("An error occurred when mapping to registration information", e);
         }
     }
 }
