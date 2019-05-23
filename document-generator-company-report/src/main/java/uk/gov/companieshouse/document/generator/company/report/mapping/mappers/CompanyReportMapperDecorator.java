@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
 import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
+import uk.gov.companieshouse.api.model.psc.PscsApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.companystatusdetail.ApiToCompanyStatusMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.keyfilingdates.ApiToKeyFilingDatesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.previousnames.ApiToPreviousNamesMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.pscs.ApiToPSCSMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.ApiToRecentFilingHistoryMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
@@ -17,6 +19,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.pscs.Pscs;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 
@@ -43,6 +46,9 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
     @Autowired
     private ApiToCompanyStatusMapper apiToCompanyStatusMapper;
+
+    @Autowired
+    private ApiToPSCSMapper pscsMapper;
     
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) throws MapperException {
@@ -58,8 +64,14 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         companyReport.setRecentFilingHistory(setRecentFilingHistory(companyReportApiData.getFilingHistoryApi().getItems()));
 
         companyReport.setCompanyStatusDetail(setCompanyStatusDetails(companyReportApiData.getInsolvencyApi()));
+
+        companyReport.setPscs(setPscs(companyReportApiData.getPscsApi()));
         
         return companyReport;
+    }
+
+    private Pscs setPscs(PscsApi pscsApi) {
+        return pscsMapper.apiToPSCSMapper(pscsApi);
     }
 
     private CompanyStatusDetail setCompanyStatusDetails(InsolvencyApi insolvencyApi) {
@@ -82,7 +94,7 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         try {
             return apiToRegistrationInformationMapper.apiToRegistrationInformation(companyReportApiData);
         } catch (IOException e) {
-            throw new MapperException("An error occured when mapping to registration information", e);
+            throw new MapperException("An error occurred when mapping to registration information", e);
         }
     }
 }
