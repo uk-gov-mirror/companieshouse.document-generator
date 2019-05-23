@@ -3,7 +3,7 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.mappers.
 import org.mapstruct.Mapper;
 import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.companieshouse.api.model.insolvency.DatesApi;
-import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.items.CaseDates;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.items.Dates;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ApiToCaseDatesMapper {
 
-    CaseDates apiToCaseDatesMapper(DatesApi datesApi);
+    Dates apiToCaseDatesMapper(DatesApi datesApi);
 
-    List<CaseDates> apiToCaseDatesMapper(List<DatesApi> datesApis);
+    List<Dates> apiToCaseDatesMapper(List<DatesApi> datesApis);
 }

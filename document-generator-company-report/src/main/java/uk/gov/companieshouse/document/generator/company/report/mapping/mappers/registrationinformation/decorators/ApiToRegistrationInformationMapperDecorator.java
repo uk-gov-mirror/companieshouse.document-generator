@@ -49,7 +49,7 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
         return registrationInformation;
     }
 
-    private Status setCompanyStatus(String companyStatus, String companyStatusDetail) throws IOException {
+    private Status setCompanyStatus(String companyStatus, String companyStatusDetail) {
 
         Status status = new Status();
 
@@ -66,7 +66,7 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
         return status;
     }
 
-    private List<SicCodes> setNatureOfBusiness(String[] sicCodes) throws IOException {
+    private List<SicCodes> setNatureOfBusiness(String[] sicCodes) {
 
         List<SicCodes> listNatureOfBusiness = new ArrayList<>();
 
@@ -81,7 +81,7 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
         return listNatureOfBusiness;
     }
 
-    private CompanyType setCompanyType(String type, String subtype) throws IOException {
+    private CompanyType setCompanyType(String type, String subtype) {
 
         CompanyType companyType = new CompanyType();
 

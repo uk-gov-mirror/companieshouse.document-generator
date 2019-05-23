@@ -9,7 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import java.time.LocalDate;
 
 @JsonInclude(Include.NON_NULL)
-public class CaseDates {
+public class Dates {
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonProperty("date")

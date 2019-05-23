@@ -16,7 +16,7 @@ public class Case {
     private String type;
 
     @JsonProperty("dates")
-    private List<CaseDates> caseDates;
+    private List<Dates> dates;
 
     @JsonProperty("practitioners_details")
     private List<Practitioners> practitioners;
@@ -37,13 +37,13 @@ public class Case {
         this.type = type;
     }
 
-    public List<CaseDates> getCaseDates() {
-        return caseDates;
+    public List<Dates> getDates() {
+        return dates;
     }
 
-    public void setCaseDates(
-        List<CaseDates> caseDates) {
-        this.caseDates = caseDates;
+    public void setDates(
+        List<Dates> dates) {
+        this.dates = dates;
     }
 
     public List<Practitioners> getPractitioners() {

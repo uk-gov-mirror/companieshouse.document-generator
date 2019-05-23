@@ -67,7 +67,7 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
     }
 
     private List<RecentFilingHistory> setRecentFilingHistory(List<FilingApi> items) {
-        return apiToRecentFilingHistoryMapper.apiToRecentFilingHistoryMapper(items);
+        return apiToRecentFilingHistoryMapper.apiToRecentFilingHistoryMapperList(items);
     }
 
     private KeyFilingDates setKeyFilingDates(CompanyReportApiData companyReportApiData) {
