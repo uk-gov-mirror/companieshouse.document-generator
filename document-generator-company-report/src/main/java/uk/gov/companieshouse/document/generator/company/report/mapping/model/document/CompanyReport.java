@@ -42,7 +42,6 @@ public class CompanyReport {
 
     @JsonProperty("current_people_with_significant_control")
     private Pscs pscs;
-]
 
     public RegistrationInformation getRegistrationInformation() {
         return registrationInformation;

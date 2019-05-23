@@ -12,8 +12,8 @@ public class CurrentAppointments {
     @JsonProperty("active_count")
     private Integer numberOfCurrentAppointments;
 
-    @JsonProperty("items")
-    private List<CurrentOfficer> currentOfficers;
+    @JsonProperty("current_officers")
+    private List<CurrentOfficer> items;
 
     public Integer getNumberOfCurrentAppointments() {
         return numberOfCurrentAppointments;
@@ -23,11 +23,12 @@ public class CurrentAppointments {
         this.numberOfCurrentAppointments = numberOfCurrentAppointments;
     }
 
-    public List<CurrentOfficer> getCurrentOfficers() {
-        return currentOfficers;
+    public List<CurrentOfficer> getItems() {
+        return items;
     }
 
-    public void setCurrentOfficers(List<CurrentOfficer> currentOfficers) {
-        this.currentOfficers = currentOfficers;
+    public void setItems(
+        List<CurrentOfficer> items) {
+        this.items = items;
     }
 }
