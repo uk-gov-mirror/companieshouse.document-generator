@@ -1,0 +1,109 @@
+package uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.items;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import java.time.LocalDate;
+import uk.gov.companieshouse.api.model.common.Address;
+import uk.gov.companieshouse.api.model.common.DateOfBirth;
+
+@JsonInclude(Include.NON_NULL)
+public class CurrentOfficer {
+
+    @JsonProperty("officer_role")
+    private String officer_role;
+
+    @JsonProperty("name")
+    private String name;
+
+    private Integer numberOfAppointments;
+
+    @JsonProperty("address")
+    private Address address;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonProperty("appointed_on")
+    private LocalDate appointed;
+
+    @JsonProperty("date_of_birth")
+    private DateOfBirth dateOfBirth;
+
+    @JsonProperty("nationality")
+    private String nationality;
+
+    @JsonProperty("country_of_residence")
+    private String countryOfResidence;
+
+    public String getOfficer_role() {
+        return officer_role;
+    }
+
+    public void setOfficer_role(String officer_role) {
+        this.officer_role = officer_role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getNumberOfAppointments() {
+        return numberOfAppointments;
+    }
+
+    public void setNumberOfAppointments(Integer numberOfAppointments) {
+        this.numberOfAppointments = numberOfAppointments;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public LocalDate getAppointed() {
+        return appointed;
+    }
+
+    public void setAppointed(LocalDate appointed) {
+        this.appointed = appointed;
+    }
+
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getCountryOfResidence() {
+        return countryOfResidence;
+    }
+
+    public void setCountryOfResidence(String countryOfResidence) {
+        this.countryOfResidence = countryOfResidence;
+    }
+
+    public DateOfBirth getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(DateOfBirth dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+}
+
+
+
+
+
+
