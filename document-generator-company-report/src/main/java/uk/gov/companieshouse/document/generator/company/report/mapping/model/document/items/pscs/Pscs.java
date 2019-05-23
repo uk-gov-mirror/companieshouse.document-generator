@@ -8,13 +8,13 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import java.util.List;
 
 @JsonInclude(Include.NON_NULL)
-public class CurrentPeopleWithSignificantControl {
+public class Pscs {
 
     @JsonProperty("active_count")
     private Integer activeCount;
 
     @JsonProperty("psc")
-    private List<Psc> psc;
+    private List<Psc> items;
 
     public Integer getActiveCount() {
         return activeCount;
@@ -24,12 +24,12 @@ public class CurrentPeopleWithSignificantControl {
         this.activeCount = activeCount;
     }
 
-    public List<Psc> getPsc() {
-        return psc;
+    public List<Psc> getItems() {
+        return items;
     }
 
-    public void setPsc(
-        List<Psc> psc) {
-        this.psc = psc;
+    public void setItems(
+        List<Psc> items) {
+        this.items = items;
     }
 }

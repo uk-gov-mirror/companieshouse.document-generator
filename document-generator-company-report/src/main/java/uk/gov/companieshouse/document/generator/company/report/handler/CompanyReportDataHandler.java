@@ -141,10 +141,10 @@ public class CompanyReportDataHandler {
                     companyReportApiData.setChargesApi(chargesApi);
                 }
 
-                else if(pair.getKey() == "persons_with_significant_control_statements") {
-                    errorString = "persons with significant control statements";
+                else if(pair.getKey() == "persons-with-significant-control") {
+                    errorString = "persons-with-significant-control";
                     PscsApi pscsApi = apiClient.pscs().list(GET_COMPANY_URI.expand(companyNumber).toString() +
-                            "/persons-with-significant-control-statements").execute().getData();
+                            "/persons-with-significant-control").execute().getData();
                     companyReportApiData.setPscsApi(pscsApi);
                 }
             } catch (ApiErrorResponseException e) {
