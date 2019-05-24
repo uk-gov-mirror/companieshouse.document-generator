@@ -11,7 +11,6 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 
 @RequestScope
 @Mapper(componentModel = "spring", uses = {ApiToCurrentOfficer.class})
-//@DecoratedWith(ApiToCurrentAppointmentsMapperDecorator.class)
 public interface ApiToCurrentAppointmentsMapper {
 
     @Mappings({

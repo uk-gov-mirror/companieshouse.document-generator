@@ -31,15 +31,30 @@ public abstract class ApiToCurrentOfficer {
 
     @AfterMapping
     protected void convertOfficerRole(CompanyOfficerApi companyOfficerApi, @MappingTarget CurrentOfficer currentOfficer) {
-        currentOfficer.setOfficer_role(retrieveApiEnumerationDescription
-            .getApiEnumerationDescription(CONSTANTS, "officer_role", (currentOfficer.getOfficer_role().toLowerCase())));
+
+        if (hasOfficerRole(companyOfficerApi)) {
+            currentOfficer.setOfficer_role(retrieveApiEnumerationDescription
+                .getApiEnumerationDescription(CONSTANTS, "officer_role", (companyOfficerApi.getOfficer_role().getOfficerRole().toLowerCase())));
+        }
     }
 
     @AfterMapping
     protected void setOfficerAppointments(CompanyOfficerApi companyOfficerApi, @MappingTarget CurrentOfficer currentOfficer) {
-        if (companyOfficerApi.getLinks().getOfficer().getAppointments() != null) {
+
+        if (hasAppointmentLink(companyOfficerApi)) {
             //TODO implement call to obtain appointments
             currentOfficer.setNumberOfAppointments(10);
         }
+    }
+
+    private boolean hasOfficerRole(CompanyOfficerApi companyOfficerApi) {
+        return companyOfficerApi.getOfficer_role() != null &&
+            companyOfficerApi.getOfficer_role().getOfficerRole() != null;
+    }
+
+    private boolean hasAppointmentLink(CompanyOfficerApi companyOfficerApi) {
+        return companyOfficerApi.getLinks() != null &&
+            companyOfficerApi.getLinks().getOfficer() != null &&
+            companyOfficerApi.getLinks().getOfficer().getAppointments() != null;
     }
 }
