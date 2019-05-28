@@ -16,6 +16,7 @@ import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingHistoryApi;
 import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
+import uk.gov.companieshouse.api.model.officers.CompanyOfficerApi;
 import uk.gov.companieshouse.api.model.officers.OfficersApi;
 import uk.gov.companieshouse.api.model.psc.PscsApi;
 import uk.gov.companieshouse.document.generator.company.report.exception.HandlerException;
@@ -35,8 +36,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static uk.gov.companieshouse.document.generator.company.report.CompanyReportDocumentInfoServiceImpl.MODULE_NAME_SPACE;
 
@@ -131,6 +134,14 @@ public class CompanyReportDataHandler {
                     errorString = "officers";
                     OfficersApi officersApi = apiClient.officers()
                         .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers").execute().getData();
+
+                    //TODO filter officer to remove resigned officers (check if correct)
+                    List<CompanyOfficerApi> officer = officersApi.getItems().stream()
+                        .filter(item -> item.getResignedOn() == null)
+                        .collect(Collectors.toList());
+
+                    officersApi.setItems(officer);
+
                     companyReportApiData.setOfficersApi(officersApi);
                 }
 
