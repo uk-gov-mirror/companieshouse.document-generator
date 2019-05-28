@@ -55,7 +55,8 @@ public class Psc {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(DateOfBirth dateOfBirth) {
+    public void setDateOfBirth(
+        DateOfBirth dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

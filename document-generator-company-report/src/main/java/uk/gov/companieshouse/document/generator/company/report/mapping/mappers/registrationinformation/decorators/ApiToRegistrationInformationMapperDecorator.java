@@ -24,8 +24,6 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
     @Autowired
     private RetrieveApiEnumerationDescription retrieveApiEnumerationDescription;
 
-    @Autowired
-    private ConstantsApiEnumeration constantsApiEnumeration;
 
     private static final String CONSTANTS = "constants.yml";
 

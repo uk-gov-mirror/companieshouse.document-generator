@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.CurrentAppointments;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.pscs.Pscs;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
@@ -34,6 +36,12 @@ public class CompanyReport {
 
     @JsonProperty("company_status_detail")
     private CompanyStatusDetail companyStatusDetail;
+
+    @JsonProperty("current_appointments")
+    private CurrentAppointments currentAppointments;
+
+    @JsonProperty("current_people_with_significant_control")
+    private Pscs pscs;
 
     public RegistrationInformation getRegistrationInformation() {
         return registrationInformation;
@@ -78,5 +86,22 @@ public class CompanyReport {
     public void setCompanyStatusDetail(
         CompanyStatusDetail companyStatusDetail) {
         this.companyStatusDetail = companyStatusDetail;
+    }
+
+    public CurrentAppointments getCurrentAppointments() {
+        return currentAppointments;
+    }
+
+    public void setCurrentAppointments(CurrentAppointments currentAppointments) {
+        this.currentAppointments = currentAppointments;
+    }
+
+    public Pscs getPscs() {
+        return pscs;
+    }
+
+    public void setPscs(
+        Pscs pscs) {
+        this.pscs = pscs;
     }
 }

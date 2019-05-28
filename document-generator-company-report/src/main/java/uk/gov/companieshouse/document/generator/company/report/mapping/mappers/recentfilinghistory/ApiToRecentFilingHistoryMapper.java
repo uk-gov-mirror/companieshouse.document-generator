@@ -24,6 +24,13 @@ public abstract class ApiToRecentFilingHistoryMapper {
 
     private static final String FILING_HISTORY_DESCRIPTIONS = "filing_history_descriptions.yml";
 
+    @Mappings({
+        @Mapping(source = "type", target = "form")
+    })
+    public abstract RecentFilingHistory apiToRecentFilingHistoryMapper(FilingApi filingApi);
+
+    public abstract List<RecentFilingHistory> apiToRecentFilingHistoryMapperList(List<FilingApi> filingApis);
+
     @AfterMapping
     protected void convertFilingDescription(FilingApi filingApi, @MappingTarget RecentFilingHistory recentFilingHistory) {
 
@@ -50,10 +57,4 @@ public abstract class ApiToRecentFilingHistoryMapper {
         return sub.replace(description);
     }
 
-    @Mappings({
-        @Mapping(source = "type", target = "form")
-    })
-    public abstract RecentFilingHistory apiToRecentFilingHistoryMapper(FilingApi filingApi);
-
-    public abstract List<RecentFilingHistory> apiToRecentFilingHistoryMapperList(List<FilingApi> filingApis);
 }
