@@ -7,9 +7,16 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.util.UriTemplate;
+import uk.gov.companieshouse.api.ApiClient;
+import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.api.handler.exception.URIValidationException;
+import uk.gov.companieshouse.api.model.officerappointments.OfficerAppointmentsApi;
 import uk.gov.companieshouse.api.model.officers.CompanyOfficerApi;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.RetrieveApiEnumerationDescription;
+import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.items.CurrentOfficer;
+import uk.gov.companieshouse.document.generator.company.report.service.ApiClientService;
 
 import java.util.List;
 
@@ -20,14 +27,17 @@ public abstract class ApiToCurrentOfficer {
     @Autowired
     private RetrieveApiEnumerationDescription retrieveApiEnumerationDescription;
 
+    @Autowired
+    private ApiClientService apiClientService;
+
     private static final String CONSTANTS = "constants.yml";
 
     @Mappings({
             @Mapping(source = "appointedOn", target = "appointed"),
     })
-    public abstract CurrentOfficer apiToCurrentOfficer(CompanyOfficerApi companyOfficerApi);
+    public abstract CurrentOfficer apiToCurrentOfficer(CompanyOfficerApi companyOfficerApi) throws MapperException;
 
-    public abstract List<CurrentOfficer> apiToCurrentOfficer(List<CompanyOfficerApi> companyOfficerApis);
+    public abstract List<CurrentOfficer> apiToCurrentOfficer(List<CompanyOfficerApi> companyOfficerApis) throws MapperException;
 
     @AfterMapping
     protected void convertOfficerRole(CompanyOfficerApi companyOfficerApi, @MappingTarget CurrentOfficer currentOfficer) {
@@ -39,11 +49,23 @@ public abstract class ApiToCurrentOfficer {
     }
 
     @AfterMapping
-    protected void setOfficerAppointments(CompanyOfficerApi companyOfficerApi, @MappingTarget CurrentOfficer currentOfficer) {
+    protected void setOfficerAppointments(CompanyOfficerApi companyOfficerApi, @MappingTarget CurrentOfficer currentOfficer) throws MapperException {
 
         if (hasAppointmentLink(companyOfficerApi)) {
-            //TODO implement call to obtain appointments
-            currentOfficer.setNumberOfAppointments(10);
+
+            ApiClient apiClient = apiClientService.getApiClient();
+            OfficerAppointmentsApi officerAppointmentsApi;
+
+            try {
+                officerAppointmentsApi = apiClient.officerAppointment()
+                    .get(new UriTemplate(companyOfficerApi.getLinks().getOfficer().getAppointments()).toString()).execute().getData();
+            } catch (ApiErrorResponseException | URIValidationException e) {
+                throw new MapperException("An error occurred when retrieving officer appointments", e);
+            }
+
+            if (officerAppointmentsApi != null) {
+                currentOfficer.setNumberOfAppointments(officerAppointmentsApi.getTotalResults());
+            }
         }
     }
 
