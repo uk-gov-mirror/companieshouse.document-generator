@@ -17,7 +17,6 @@ public interface ApiToChargesMapper {
         @Mapping(source = "classification.description", target = "description"),
         @Mapping(source = "createdOn", target = "createdDate"),
         @Mapping(source = "deliveredOn", target = "delivered"),
-//        @Mapping(source = "transactions.filingType", target = "transaction"),
         @Mapping(source = "acquiredOn", target = "acquisitionDate"),
         @Mapping(source = "assetsCeasedReleased", target = "assetsCeased"),
         @Mapping(source = "securedDetails.description", target = "securedDetailsDescription"),
@@ -29,7 +28,6 @@ public interface ApiToChargesMapper {
         @Mapping(source = "particulars.containsNegativeCharge", target = "containsNegativePledge"),
         @Mapping(source = "particulars.floatingChargeCoversAll", target = "floatingChargeCoversAll"),
     })
-
     Charge apiToCharge(ChargeApi chargeApi);
 
     List<Charge> apiToCharge(List<ChargeApi> chargeApi);
