@@ -8,7 +8,7 @@ import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.mortgagechargedetails.MortgageChargeDetails;
 
 @RequestScope
-@Mapper(componentModel = "spring", uses = {ApiToChargesMapper.class})
+@Mapper(componentModel = "spring", uses = {ApiToChargesMapper.class, ApiToTransactionMapper.class})
 public interface ApiToMortgageChargeDetailsMapper {
 
     @Mappings({
