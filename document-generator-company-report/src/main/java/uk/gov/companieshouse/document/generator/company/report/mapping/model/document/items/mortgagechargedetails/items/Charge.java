@@ -45,6 +45,9 @@ public class Charge {
     @JsonProperty("secured_details_description")
     private String securedDetailsDescription;
 
+    @JsonProperty("secured_details_type")
+    private String securedDetailsType;
+
     @JsonProperty("particulars_type")
     private String type;
 
@@ -208,5 +211,13 @@ public class Charge {
 
     public void setFloatingChargeCoversAll(Boolean floatingChargeCoversAll) {
         this.floatingChargeCoversAll = floatingChargeCoversAll;
+    }
+
+    public String getSecuredDetailsType() {
+        return securedDetailsType;
+    }
+
+    public void setSecuredDetailsType(String securedDetailsType) {
+        this.securedDetailsType = securedDetailsType;
     }
 }
