@@ -14,6 +14,5 @@ public interface ApiToMortgageChargeDetailsMapper {
     @Mappings({
         @Mapping(source = "items", target = "charges")
     })
-
     MortgageChargeDetails apiToMortgageChargeDetails(ChargesApi chargesApi);
 }
