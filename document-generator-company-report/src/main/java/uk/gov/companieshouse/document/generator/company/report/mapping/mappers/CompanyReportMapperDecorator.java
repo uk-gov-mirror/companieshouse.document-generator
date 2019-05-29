@@ -26,7 +26,9 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
@@ -107,7 +109,12 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
     }
 
     private List<RecentFilingHistory> setRecentFilingHistory(List<FilingApi> items) {
-        return apiToRecentFilingHistoryMapper.apiToRecentFilingHistoryMapperList(items);
+
+        List<RecentFilingHistory> mappedFiling = apiToRecentFilingHistoryMapper.apiToRecentFilingHistoryMapperList(items);
+
+        return mappedFiling.stream()
+            .sorted(Comparator.comparing(RecentFilingHistory::getDate, Comparator.nullsLast(Comparator.reverseOrder())))
+            .collect(Collectors.toList());
     }
 
     private KeyFilingDates setKeyFilingDates(CompanyReportApiData companyReportApiData) {

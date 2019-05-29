@@ -14,6 +14,7 @@ import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
+import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingHistoryApi;
 import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
 import uk.gov.companieshouse.api.model.officers.CompanyOfficerApi;
@@ -34,6 +35,9 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -120,6 +124,15 @@ public class CompanyReportDataHandler {
                     errorString = "filing history";
                     FilingHistoryApi filingHistoryApi = apiClient.filingHistory()
                         .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/filing-history").execute().getData();
+
+                    //TODO sort filings in action date order then only take top 100
+                    List<FilingApi> filings = filingHistoryApi.getItems().stream()
+                        .sorted(Comparator.comparing(FilingApi::getActionDate, Comparator.nullsLast(Comparator.reverseOrder())))
+                        .limit(100)
+                        .collect(Collectors.toList());
+
+                    filingHistoryApi.setItems(filings);
+
                     companyReportApiData.setFilingHistoryApi(filingHistoryApi);
                 }
 
@@ -136,11 +149,11 @@ public class CompanyReportDataHandler {
                         .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers").execute().getData();
 
                     //TODO filter officer to remove resigned officers (check if correct)
-                    List<CompanyOfficerApi> officer = officersApi.getItems().stream()
+                    List<CompanyOfficerApi> officers = officersApi.getItems().stream()
                         .filter(item -> item.getResignedOn() == null)
                         .collect(Collectors.toList());
 
-                    officersApi.setItems(officer);
+                    officersApi.setItems(officers);
 
                     companyReportApiData.setOfficersApi(officersApi);
                 }
