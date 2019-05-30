@@ -18,6 +18,7 @@ public class CurrentOfficer {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("number_of_appointments")
     private Integer numberOfAppointments;
 
     @JsonProperty("address")
