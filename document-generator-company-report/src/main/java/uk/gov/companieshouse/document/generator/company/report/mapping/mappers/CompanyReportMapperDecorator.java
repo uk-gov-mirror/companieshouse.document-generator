@@ -2,6 +2,8 @@ package uk.gov.companieshouse.document.generator.company.report.mapping.mappers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import uk.gov.companieshouse.api.model.charges.ChargeApi;
+import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.api.model.company.PreviousCompanyNamesApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
 import uk.gov.companieshouse.api.model.insolvency.InsolvencyApi;
@@ -11,6 +13,7 @@ import uk.gov.companieshouse.document.generator.company.report.exception.MapperE
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.companystatusdetail.ApiToCompanyStatusMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.currentappointments.ApiToCurrentAppointmentsMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.keyfilingdates.ApiToKeyFilingDatesMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.mortgagechargedetails.ApiToMortgageChargeDetailsMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.previousnames.ApiToPreviousNamesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.pscs.ApiToPSCSMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.ApiToRecentFilingHistoryMapper;
@@ -20,6 +23,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.CurrentAppointments;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.keyfilingdates.KeyFilingDates;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.mortgagechargedetails.MortgageChargeDetails;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.pscs.Pscs;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
@@ -52,6 +56,9 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
     private ApiToCompanyStatusMapper apiToCompanyStatusMapper;
 
     @Autowired
+    private ApiToMortgageChargeDetailsMapper mortgageChargeDetailsMapper;
+
+    @Autowired
     private ApiToCurrentAppointmentsMapper apiToCurrentAppointmentsMapper;
 
     @Autowired
@@ -82,6 +89,10 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
                 companyReport.setCompanyStatusDetail(setCompanyStatusDetails(companyReportApiData.getInsolvencyApi()));
             }
 
+            if (companyReportApiData.getChargesApi() != null) {
+                companyReport.setMortgageChargeDetails(setMortgageChargeDetails(companyReportApiData.getChargesApi()));
+            }
+
             companyReport.setCurrentAppointments(setCurrentAppointments(companyReportApiData.getOfficersApi()));
 
             companyReport.setCompanyStatusDetail(setCompanyStatusDetails(companyReportApiData.getInsolvencyApi()));
@@ -98,6 +109,10 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
         } catch (MapperException e) {
             throw new MapperException("An error occurred when mapping to current appointments", e);
         }
+    }
+
+    private MortgageChargeDetails setMortgageChargeDetails(ChargesApi chargeApi) {
+        return mortgageChargeDetailsMapper.apiToMortgageChargeDetails(chargeApi);
     }
 
     private Pscs setPscs(PscsApi pscsApi) {

@@ -21,8 +21,7 @@ public abstract class ApiToChargesMapper {
     private RetrieveApiEnumerationDescription retrieveApiEnumerationDescription;
 
     private static final String MORTGAGE_DESCRIPTIONS = "mortgage_descriptions.yml";
-    private static final String AMOUNT_SECURED = "amount-secured";
-    private static final String OBLIGATIONS_SECURED = "obligations-secured";
+    private static final String SECURED_DETAILS_DESCRIPTION = "secured-details-description";
 
     @Mappings({
         @Mapping(source = "classification.description", target = "description"),
@@ -40,7 +39,6 @@ public abstract class ApiToChargesMapper {
         @Mapping(source = "particulars.containsNegativeCharge", target = "containsNegativePledge"),
         @Mapping(source = "particulars.floatingChargeCoversAll", target = "floatingChargeCoversAll"),
     })
-
     public abstract Charge apiToCharge(ChargeApi chargeApi);
 
     public abstract List<Charge> apiToCharge(List<ChargeApi> chargeApi);
@@ -50,21 +48,10 @@ public abstract class ApiToChargesMapper {
 
         if (hasType(chargeApi)) {
 
-            String securedDetailsType = chargeApi.getSecuredDetails().getType().getType();
-
-            if (securedDetailsType.equals(AMOUNT_SECURED)) {
-                charge.setSecuredDetailsDescription(
-                    retrieveApiEnumerationDescription.getApiEnumerationDescription(
-                    MORTGAGE_DESCRIPTIONS, AMOUNT_SECURED,
-                        chargeApi.getSecuredDetails().getType().getType().toLowerCase()));
-            }
-
-            if (securedDetailsType.equals(OBLIGATIONS_SECURED)) {
-                charge.setSecuredDetailsDescription(
-                    retrieveApiEnumerationDescription.getApiEnumerationDescription(
-                    MORTGAGE_DESCRIPTIONS, OBLIGATIONS_SECURED,
-                        chargeApi.getSecuredDetails().getType().getType().toLowerCase()));
-            }
+            charge.setSecuredDetailsType(
+                retrieveApiEnumerationDescription.getApiEnumerationDescription(
+                    MORTGAGE_DESCRIPTIONS, SECURED_DETAILS_DESCRIPTION,
+                    chargeApi.getSecuredDetails().getType().getType()));
         }
     }
 
