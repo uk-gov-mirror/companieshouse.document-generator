@@ -30,7 +30,6 @@ public abstract class ApiToChargesMapper {
         @Mapping(source = "acquiredOn", target = "acquisitionDate"),
         @Mapping(source = "assetsCeasedReleased", target = "assetsCeased"),
         @Mapping(source = "securedDetails.description", target = "securedDetailsDescription"),
-        @Mapping(source = "securedDetails.type", target = "securedDetailsType"),
         @Mapping(source = "particulars.type", target = "type"),
         @Mapping(source = "particulars.description", target = "particularsDescription"),
         @Mapping(source = "particulars.chargorActingAsBareTrustee", target = "chargorActingAsBareTrustee"),
