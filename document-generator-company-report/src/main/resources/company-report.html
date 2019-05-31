@@ -96,8 +96,8 @@
             .margin-large {
             margin-top: 4em;
             }
-            .margin-left {
-            margin-left: 20px;
+            .margin-right {
+            margin-right: 20px;
             }
             .margin-xx-large {
             margin-top: 10em;
@@ -650,15 +650,29 @@
     </div>
     <br>
       <p>
-          <b> Number of Charges :</b>
-          <span class="margin-left" id="total-charges">{{$mortgageChargeDetails.total_count}} (</span>
+          <span class="margin-right" id="number-of-charges-heading" ><b> Number of Charges :</b></span>
+          <span id="total-charges">{{$mortgageChargeDetails.total_count}} (</span>
           <span id="outstanding-charges">{{$mortgageChargeDetails.outstanding}} outstanding / </span>
           <span id="part-satisfied-charges">{{$mortgageChargeDetails.part_satisfied_count}} part satisfied / </span>
           <span id="satisfied-charges">{{$mortgageChargeDetails.satisfied_count}} satisfied)</span>
-
       </p>
-    <br>
-    <p> ADD LIST OF CHARGES</p>
+    <hr>
+
+
+      {{if $charges := $mortgageChargeDetails.charges}}
+      {{- range $charges -}}
+      <p>
+          <span id="charge-details-heading"><b>Charge Details:</b></span>
+      <br>
+          <span id="charge-description-heading"><b>Description:</b></span>
+          <span id="charge-description">{{.description}}</span>
+      <br>
+          <span id="charge-status-heading"><b>Charge Status:</b></span>
+          <span id="charge-status">{{.status}}</span>
+      </p>
+
+      {{end}}
+      {{end}}
   </div>
 </div>
 
