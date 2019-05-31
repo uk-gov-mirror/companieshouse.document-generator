@@ -13,7 +13,7 @@ import uk.gov.companieshouse.api.model.common.DateOfBirth;
 public class CurrentOfficer {
 
     @JsonProperty("officer_role")
-    private String officer_role;
+    private String officerRole;
 
     @JsonProperty("name")
     private String name;
@@ -37,12 +37,12 @@ public class CurrentOfficer {
     @JsonProperty("country_of_residence")
     private String countryOfResidence;
 
-    public String getOfficer_role() {
-        return officer_role;
+    public String getOfficerRole() {
+        return officerRole;
     }
 
-    public void setOfficer_role(String officer_role) {
-        this.officer_role = officer_role;
+    public void setOfficerRole(String officerRole) {
+        this.officerRole = officerRole;
     }
 
     public String getName() {

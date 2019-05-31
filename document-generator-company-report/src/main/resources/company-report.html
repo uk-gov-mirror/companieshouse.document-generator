@@ -310,16 +310,17 @@
     </div>
     <table>
       <tr>
-        <td>Company Number:</td>
+        <td><b>Company Number:</b></td>
         <td>{{$companyRegistrationInformation.company_number}}</td>
+        <td><b>Date of Incorporation:</b>{{$companyRegistrationInformation.date_of_incorporation}}</td>
       </tr>
       <tr>
-        <td>Company Name:</td>
+        <td><b>Company Name:</b></td>
         <td>{{$companyRegistrationInformation.company_name}}</td>
       </tr>
       {{if $roa := $companyRegistrationInformation.registered_office}}
       <tr>
-        <td>Registered Office:</td>
+        <td><b>Registered Office:</b></td>
         <td>
           {{if $roa.care_of}}
           {{index $roa "care_of"}}
@@ -360,15 +361,15 @@
       </tr>
       {{end}}
       <tr>
-        <td>Company Type:</td>
+        <td><b>Company Type:</b></td>
         <td> {{index $companyRegistrationInformation.company_type "type"}}</td>
       </tr>
       <tr>
-        <td>Status:</td>
+        <td><b>Status:</b></td>
         <td> {{index $companyRegistrationInformation.status "company_status"}}</td>
       </tr>
       <tr>
-        <td>Nature Of Business (SIC):</td>
+        <td><b>Nature Of Business (SIC):</b></td>
         <td>
           {{range $companyRegistrationInformation.nature_of_business}}
           {{.sic_codes}} - {{.sic_codes_description}}
@@ -392,10 +393,10 @@
       </tr>
       <tr>
         <td>
-          <h1>Date of Change</h1>
+          <h3>Date of Change</h3>
         </td>
         <td>
-          <h1>Previous Name</h1>
+          <h3>Previous Name</h3>
         </td>
         {{- range $previousNames -}}
       <tr>
@@ -410,28 +411,28 @@
         </td>
       </tr>
       <tr>
-        <td>Accounting Reference Date:</td>
+        <td><b>Accounting Reference Date:</b></td>
         <td>{{index $keyFilingDates.accounting_reference_date "day"}}/{{index $keyFilingDates.accounting_reference_date "month"}}</td>
       </tr>
       <tr>
-        <td>Last Accounts Made Up To:</td>
+        <td><b>Last Accounts Made Up To:</b></td>
         <td>{{$keyFilingDates.last_accounts_made_up_to}}</td>
       </tr>
       <tr>
-        <td>Next Accounts Due:</td>
+        <td><b>Next Accounts Due:</b></td>
         <td>{{$keyFilingDates.next_accounts_due}}</td>
       </tr>
       <tr>
-        <td>Last Confirmation Statement Date:</td>
+        <td><b>Last Confirmation Statement Date:</b></td>
         <td>{{$keyFilingDates.last_confirmation_statement}}</td>
       </tr>
       <tr>
-        <td>Next Confirmation Statement Due:</td>
+        <td><b>Next Confirmation Statement Due:</b></td>
         <td>{{$keyFilingDates.next_confirmation_statement}}</td>
       </tr>
       <br>
       <tr>
-        <td>Last members list:</td>
+        <td><b>Last members list:</b></td>
         <td>{{$keyFilingDates.last_members_list}}</td>
       </tr>
     </table>
@@ -454,24 +455,67 @@
       </h1>
     </div>
     <br>
-    <p> Status: {{$companyRegistrationInformation.company_status}}</p>
+    <p> Status: {{$companyStatusDetail.status}}</p>
     <br>
-    <table>
-      <tr>
-        <td>Case Number:</td>
-        <td>**case number**</td>
-      </tr>
-      <tr>
-        <td>Case Type:</td>
-        <td>**case type**</td>
-      </tr>
-      <tr></tr>
-      <tr>
-        <td>Appointment Date:</td>
-        <td>**appointment date**</td>
-      </tr>
-      <p> other details dependent on company status - more info required</p>
-    </table>
+    {{if $cases := $companyStatusDetail.cases}}
+      {{- range $cases -}}
+        <table>
+          <tr>
+            <td><b>Case Number:</b></td>
+            <td>{{.number}}</td>
+          </tr>
+          <tr>
+            <td><b>Case Type:</b></td>
+            <td>{{.type}}</td>
+          </tr>
+          {{if $practitioners := .practitioners_details}}
+            {{- range $practitioners -}}
+                <tr>
+                  <h3>Practitioner Details</h3>
+                  <p>{{.name}}</p>
+                  <p>
+                    {{if .address.care_of}}
+                    {{index .address "care_of"}}
+                    <br>
+                    {{end}}
+                    {{if .address.po_box}}
+                    {{index .address "po_box"}}
+                    <br>
+                    {{end}}
+                    {{if .address.premises}}
+                    {{index .address "premises"}}
+                    <br>
+                    {{end}}
+                    {{if .address.address_line_1}}
+                    {{index .address "address_line_1"}}
+                    <br>
+                    {{end}}
+                    {{if .address.address_line_2}}
+                    {{index .address "address_line_2"}}
+                    <br>
+                    {{end}}
+                    {{if .address.locality}}
+                    {{index .address "locality"}}
+                    <br>
+                    {{end}}
+                    {{if .address.region}}
+                    {{index .address "region"}}
+                    <br>
+                    {{end}}
+                    {{if .address.country}}
+                    {{index .address "country"}}
+                    <br>
+                    {{end}}
+                    {{if .address.postal_code}}
+                    {{index .address "postal_code"}}
+                    {{end}}
+                  </p>
+                </tr>
+            {{end}}
+          {{end}}
+        </table>
+      {{end}}
+    {{end}}
   </div>
 </div>
 
@@ -493,41 +537,73 @@
     <br>
     <p><b> Number of current appointments :</b> {{$currentAppointments.active_count}}</p>
     <br>
-    <table>
-      {{if $currentOfficers := $currentAppointments.current_officers}}
-        <tr>
-          <td>{{$currentOfficers.occupation}}</td>
-          <td>{{$currentOfficers.name}}</td>
-        </tr>
-        <tr>
-          <td><b>Appointed:</b></td>
-          <td>{{$currentOfficers.appointed_on}}</td>
-          <td><b>Date of Birth:</b> >{{$currentOfficers.date_of_birth}}</td>
-        </tr>
-        <tr></tr>
-        <tr>
-          <td><b>No. of appointments:</b></td>
-          <td>{{$currentOfficers.number_of_appointments}}</td>
-        </tr>
-        <tr>
-          <td><b>Address:</b></td>
-          <td>
-        <tr>{{$currentOfficers.address.care_of}}</tr>
-        <tr>{{$currentOfficers.address.po_box}}</tr>
-        <tr>{{$currentOfficers.address.address_line_1}}</tr>
-        <tr>{{$currentOfficers.address.address_line_2}}</tr>
-        <tr>{{$currentOfficers.address.locality}}</tr>
-        <tr>{{$currentOfficers.address.region}}</tr>
-        <tr>{{$currentOfficers.address.country}}</tr>
-        <tr>{{$currentOfficers.address.postal_code}}</tr>
-        </td>
-        </tr>
-        <tr>
-          <td>Country/State of Residence:</td>
-          <td>{{$currentOfficers.address.country_of_residence}}</td>
-        </tr>
+    {{if $currentOfficers := $currentAppointments.current_officers}}
+      {{- range $currentOfficers -}}
+        <table>
+          <tr>
+            <td><b>{{.officer_role}}</b></td>
+            <td>{{.name}}</td>
+          </tr>
+          <tr>
+            <td><b>Appointed:</b></td>
+            <td>{{.appointed_on}}</td>
+            {{if .date_of_birth}}
+            <td><b>Date of Birth:</b>
+            <td>{{.date_of_birth.month}}/{{.date_of_birth.year}}</td>
+            {{end}}
+          </tr>
+          <tr></tr>
+          <tr>
+            <td><b>No. of appointments:</b></td>
+            <td>{{.number_of_appointments}}</td>
+          </tr>
+          <tr>
+            <td><b>Address:</b></td>
+            <td>
+              {{if .address.care_of}}
+              {{index .address "care_of"}}
+              <br>
+              {{end}}
+              {{if .address.po_box}}
+              {{index .address "po_box"}}
+              <br>
+              {{end}}
+              {{if .address.premises}}
+              {{index .address "premises"}}
+              <br>
+              {{end}}
+              {{if .address.address_line_1}}
+              {{index .address "address_line_1"}}
+              <br>
+              {{end}}
+              {{if .address.address_line_2}}
+              {{index .address "address_line_2"}}
+              <br>
+              {{end}}
+              {{if .address.locality}}
+              {{index .address "locality"}}
+              <br>
+              {{end}}
+              {{if .address.region}}
+              {{index .address "region"}}
+              <br>
+              {{end}}
+              {{if .address.country}}
+              {{index .address "country"}}
+              <br>
+              {{end}}
+              {{if .address.postal_code}}
+              {{index .address "postal_code"}}
+              {{end}}
+            </td>
+          </tr>
+          <tr>
+            <td><b>Country/State of Residence:</b></td>
+            <td>{{.address.country_of_residence}}</td>
+          </tr>
+        </table>
       {{end}}
-    </table>
+    {{end}}
   </div>
 </div>
 

@@ -33,7 +33,8 @@ public abstract class ApiToCurrentOfficer {
     private static final String CONSTANTS = "constants.yml";
 
     @Mappings({
-            @Mapping(source = "appointedOn", target = "appointed"),
+        @Mapping(source = "appointedOn", target = "appointed"),
+        @Mapping(ignore = true, target = "officerRole")
     })
     public abstract CurrentOfficer apiToCurrentOfficer(CompanyOfficerApi companyOfficerApi) throws MapperException;
 
@@ -43,7 +44,7 @@ public abstract class ApiToCurrentOfficer {
     protected void convertOfficerRole(CompanyOfficerApi companyOfficerApi, @MappingTarget CurrentOfficer currentOfficer) {
 
         if (hasOfficerRole(companyOfficerApi)) {
-            currentOfficer.setOfficer_role(retrieveApiEnumerationDescription
+            currentOfficer.setOfficerRole(retrieveApiEnumerationDescription
                 .getApiEnumerationDescription(CONSTANTS, "officer_role", (companyOfficerApi.getOfficer_role().getOfficerRole().toLowerCase())));
         }
     }
