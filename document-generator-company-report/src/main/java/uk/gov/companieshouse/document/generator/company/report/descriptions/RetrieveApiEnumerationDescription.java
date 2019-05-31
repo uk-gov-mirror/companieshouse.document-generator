@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.config.ConstantsApiEnumeration;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.config.FilingHistoryDescriptionsApiEnumerations;
+import uk.gov.companieshouse.document.generator.company.report.descriptions.config.MortgageDescriptionsApiEnumeration;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 
@@ -19,6 +20,9 @@ public class RetrieveApiEnumerationDescription {
 
     @Autowired
     private FilingHistoryDescriptionsApiEnumerations filingHistoryDescriptionsApiEnumerations;
+
+    @Autowired
+    private MortgageDescriptionsApiEnumeration mortgageDescriptionsApiEnumeration;
 
     private static final Logger LOG = LoggerFactory.getLogger(MODULE_NAME_SPACE);
 
@@ -58,6 +62,10 @@ public class RetrieveApiEnumerationDescription {
 
         if (apiEnumerationFile == "constants.yml") {
             return constantsApiEnumeration.getConstants();
+        }
+
+        if (apiEnumerationFile == "mortgage_descriptions.yml") {
+            return mortgageDescriptionsApiEnumeration.getMortgageDescriptions();
         }
 
         if (apiEnumerationFile == "filing_history_descriptions.yml") {

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.companystatusdetail.CompanyStatusDetail;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.CurrentAppointments;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.mortgagechargedetails.MortgageChargeDetails;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.pscs.Pscs;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
@@ -42,6 +43,9 @@ public class CompanyReport {
 
     @JsonProperty("current_people_with_significant_control")
     private Pscs pscs;
+
+    @JsonProperty("mortgage_charge_details")
+    private MortgageChargeDetails mortgageChargeDetails;
 
     public RegistrationInformation getRegistrationInformation() {
         return registrationInformation;
@@ -103,5 +107,13 @@ public class CompanyReport {
     public void setPscs(
         Pscs pscs) {
         this.pscs = pscs;
+    }
+
+    public MortgageChargeDetails getMortgageChargeDetails() {
+        return mortgageChargeDetails;
+    }
+
+    public void setMortgageChargeDetails(MortgageChargeDetails mortgageChargeDetails) {
+        this.mortgageChargeDetails = mortgageChargeDetails;
     }
 }
