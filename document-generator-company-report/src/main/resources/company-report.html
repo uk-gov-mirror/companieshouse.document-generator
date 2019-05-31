@@ -7,6 +7,7 @@
 {{$companyStatusDetail := .company_report.company_status_detail}}
 {{$currentAppointments := .company_report.current_appointments}}
 {{$psc := .company_report.current_people_with_significant_control}}
+{{$mortgageChargeDetails := .company_report.mortgage_charge_details}}
 <head>
   <meta charset="UTF-8">
   <title>{{$companyRegistrationInformation.company_name}}</title>
@@ -94,6 +95,9 @@
             }
             .margin-large {
             margin-top: 4em;
+            }
+            .margin-left {
+            margin-left: 20px;
             }
             .margin-xx-large {
             margin-top: 10em;
@@ -645,7 +649,14 @@
       </h1>
     </div>
     <br>
-    <p><b> Number of Charges :</b> ** NUMBER OF CHARGES **</p>
+      <p>
+          <b> Number of Charges :</b>
+          <span class="margin-left" id="total-charges">{{$mortgageChargeDetails.total_count}} (</span>
+          <span id="outstanding-charges">{{$mortgageChargeDetails.outstanding}} outstanding / </span>
+          <span id="part-satisfied-charges">{{$mortgageChargeDetails.part_satisfied_count}} part satisfied / </span>
+          <span id="satisfied-charges">{{$mortgageChargeDetails.satisfied_count}} satisfied)</span>
+
+      </p>
     <br>
     <p> ADD LIST OF CHARGES</p>
   </div>
