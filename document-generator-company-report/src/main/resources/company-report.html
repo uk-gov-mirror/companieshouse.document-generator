@@ -279,21 +279,30 @@
     {{$charsPerPage := 7000}}
     {{setValue "page-number" 1}}
     <div id="CompanyRecordHeader" class="page margin-xx-large">
+
       <div class="header">
+
+        <div class="text--center">
+          <img src="https://document-render-assets-registry.s3-eu-west-1.amazonaws.com/accounts/images/ch-logo.png" alt="Cannot load image" >
+        </div>
+
+        <br/>
         <h1 class="text--center">
           The Company Record for:
           <br/>
+
           {{$companyRegistrationInformation.company_name}}
           <br/>
           {{$companyRegistrationInformation.company_number}}
         </h1>
+
         <h2 class="text--center">
           Created: 01/05/2019 09:28:01 (THIS IS HARDCODED)
         </h2>
       </div>
-      <h2 class="text--center margin-large">
+      <p>
         Companies House does not verify the accuracy of the information filed.
-      </h2>
+      </p>
     </div>
   </div>
 </div>
