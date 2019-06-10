@@ -82,17 +82,17 @@
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>document-generator-accounts</artifactId>
-            <version>unversioned</version>
+            <version>868d003</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>document-generator-prosecution</artifactId>
-            <version>unversioned</version>
+            <version>868d003</version>
         </dependency>
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>document-generator-company-report</artifactId>
-            <version>unversioned</version>
+            <version>868d003</version>
         </dependency>
     </dependencies>
 
