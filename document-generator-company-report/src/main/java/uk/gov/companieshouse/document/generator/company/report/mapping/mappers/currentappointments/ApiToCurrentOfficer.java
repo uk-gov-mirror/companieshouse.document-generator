@@ -58,7 +58,7 @@ public abstract class ApiToCurrentOfficer {
             OfficerAppointmentsApi officerAppointmentsApi;
 
             try {
-                officerAppointmentsApi = apiClient.officerAppointment()
+                officerAppointmentsApi = apiClient.officers().list()
                     .get(new UriTemplate(companyOfficerApi.getLinks().getOfficer().getAppointments()).toString()).execute().getData();
             } catch (ApiErrorResponseException | URIValidationException e) {
                 throw new MapperException("An error occurred when retrieving officer appointments", e);
