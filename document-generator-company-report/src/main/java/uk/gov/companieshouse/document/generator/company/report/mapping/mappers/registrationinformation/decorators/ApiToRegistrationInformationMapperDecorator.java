@@ -68,15 +68,18 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
 
         List<SicCodes> listNatureOfBusiness = new ArrayList<>();
 
-        for (String sicCode : sicCodes) {
-            SicCodes codes = new SicCodes();
-            codes.setSicCodes(sicCode);
-            codes.setSicCodesDescription(retrieveApiEnumerationDescription
-                .getApiEnumerationDescription(CONSTANTS, "sic_descriptions", sicCode));
-            listNatureOfBusiness.add(codes);
-        }
+        if (sicCodes != null) {
 
-        return listNatureOfBusiness;
+            for (String sicCode : sicCodes) {
+                SicCodes codes = new SicCodes();
+                codes.setSicCodes(sicCode);
+                codes.setSicCodesDescription(retrieveApiEnumerationDescription
+                        .getApiEnumerationDescription(CONSTANTS, "sic_descriptions", sicCode));
+                listNatureOfBusiness.add(codes);
+            }
+
+            return listNatureOfBusiness;
+        }
     }
 
     private CompanyType setCompanyType(String type, String subtype) {
