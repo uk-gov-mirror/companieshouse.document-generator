@@ -48,7 +48,7 @@
 
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
 
-        <api-sdk-java.version>4.0.7</api-sdk-java.version>
+        <api-sdk-java.version>4.0.9</api-sdk-java.version>
 
         <snakeyaml.version>1.17</snakeyaml.version>
 
