@@ -210,8 +210,8 @@ public class CompanyReportDataHandler {
         return reportToJson;
     }
 
-    private String getCompanyNumberFromUri(String resourceUri) {
-        return  resourceUri.replaceAll("[^\\d.]", "");
+    public String getCompanyNumberFromUri(String resourceUri) {
+        return  resourceUri.replaceAll("/company-number/", "");
     }
 
     private String createPathString() {
