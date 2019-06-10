@@ -97,7 +97,7 @@ public class CompanyReportDataHandler {
         documentInfoResponse.setData(getCompanyReportData(companyNumber));
         documentInfoResponse.setAssetId("company-report");
         documentInfoResponse.setPath(createPathString());
-        documentInfoResponse.setTemplateName("company-report.html");
+        documentInfoResponse.setTemplateName("company-report-poc.html");
 
         return documentInfoResponse;
     }
