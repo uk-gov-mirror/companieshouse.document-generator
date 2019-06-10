@@ -95,7 +95,7 @@ public class CompanyReportDataHandler {
         DocumentInfoResponse documentInfoResponse = new DocumentInfoResponse();
 
         documentInfoResponse.setData(getCompanyReportData(companyNumber));
-        documentInfoResponse.setAssetId("accounts");
+        documentInfoResponse.setAssetId("company-report");
         documentInfoResponse.setPath(createPathString());
         documentInfoResponse.setTemplateName("company-report.html");
 
