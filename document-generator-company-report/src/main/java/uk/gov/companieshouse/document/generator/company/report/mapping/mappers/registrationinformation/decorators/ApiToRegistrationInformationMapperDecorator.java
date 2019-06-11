@@ -77,9 +77,8 @@ public class ApiToRegistrationInformationMapperDecorator implements ApiToRegistr
                         .getApiEnumerationDescription(CONSTANTS, "sic_descriptions", sicCode));
                 listNatureOfBusiness.add(codes);
             }
-
-            return listNatureOfBusiness;
         }
+        return listNatureOfBusiness;
     }
 
     private CompanyType setCompanyType(String type, String subtype) {

@@ -211,7 +211,7 @@ public class CompanyReportDataHandler {
     }
 
     public String getCompanyNumberFromUri(String resourceUri) {
-        return  resourceUri.replaceAll("/company-number/", "");
+        return  resourceUri.replaceAll("^/company-number/", "");
     }
 
     private String createPathString() {
