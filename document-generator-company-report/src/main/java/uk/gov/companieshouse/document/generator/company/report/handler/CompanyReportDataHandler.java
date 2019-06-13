@@ -12,6 +12,8 @@ import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
+import uk.gov.companieshouse.api.handler.filinghistory.request.FilingHistoryList;
+import uk.gov.companieshouse.api.handler.officers.request.OfficersList;
 import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
@@ -122,8 +124,13 @@ public class CompanyReportDataHandler {
             try {
                 if(pair.getKey() == "filing_history") {
                     errorString = "filing history";
-                    FilingHistoryApi filingHistoryApi = apiClient.filingHistory()
-                        .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/filing-history").execute().getData();
+
+                    FilingHistoryList filingHistoryList = apiClient.filingHistory()
+                            .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/filing-history");
+
+                    filingHistoryList.addQueryParams("items_per_page","100");
+
+                    FilingHistoryApi filingHistoryApi = filingHistoryList.execute().getData();
 
                     //TODO sort filings in action date order then only take top 100
                     List<FilingApi> filings = filingHistoryApi.getItems().stream()
@@ -145,8 +152,12 @@ public class CompanyReportDataHandler {
 
                 else if(pair.getKey() == "officers") {
                     errorString = "officers";
-                    OfficersApi officersApi = apiClient.officers()
-                        .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers").execute().getData();
+
+                    OfficersList officersList = apiClient.officers()
+                            .list(GET_COMPANY_URI.expand(companyNumber).toString() + "/officers");
+                    officersList.addQueryParams("items_per_page","100");
+
+                    OfficersApi officersApi = officersList.execute().getData();
 
                     //TODO filter officer to remove resigned officers (check if correct)
                     List<CompanyOfficerApi> officers = officersApi.getItems().stream()
