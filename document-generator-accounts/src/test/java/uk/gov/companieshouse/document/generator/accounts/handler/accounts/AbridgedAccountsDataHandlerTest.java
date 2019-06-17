@@ -17,10 +17,10 @@ import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.document.generator.accounts.data.transaction.Resources;
 import uk.gov.companieshouse.document.generator.accounts.data.transaction.Transaction;
 import uk.gov.companieshouse.document.generator.accounts.exception.HandlerException;
-import uk.gov.companieshouse.document.generator.accounts.exception.ServiceException;
 import uk.gov.companieshouse.document.generator.accounts.service.AccountsService;
-import uk.gov.companieshouse.document.generator.accounts.service.CompanyService;
 import uk.gov.companieshouse.document.generator.accounts.service.TransactionService;
+import uk.gov.companieshouse.document.generator.common.exception.ServiceException;
+import uk.gov.companieshouse.document.generator.common.service.CompanyService;
 
 import java.util.HashMap;
 import java.util.Map;

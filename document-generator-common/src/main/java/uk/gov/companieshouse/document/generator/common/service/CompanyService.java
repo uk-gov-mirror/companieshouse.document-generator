@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.document.generator.accounts.service.impl;
+package uk.gov.companieshouse.document.generator.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,21 +7,17 @@ import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
-import uk.gov.companieshouse.document.generator.accounts.exception.ServiceException;
-import uk.gov.companieshouse.document.generator.accounts.service.ApiClientService;
-import uk.gov.companieshouse.document.generator.accounts.service.CompanyService;
-
+import uk.gov.companieshouse.document.generator.common.exception.ServiceException;
 
 @Service
-public class CompanyServiceImpl implements CompanyService {
+public class CompanyService {
 
     @Autowired
     private ApiClientService apiClientService;
 
     private static final UriTemplate GET_COMPANY_URI =
-            new UriTemplate("/company/{companyNumber}");
+        new UriTemplate("/company/{companyNumber}");
 
-    @Override
     public CompanyProfileApi getCompanyProfile(String companyNumber) throws ServiceException {
 
         CompanyProfileApi companyProfileApi;

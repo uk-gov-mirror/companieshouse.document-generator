@@ -6,8 +6,8 @@ import uk.gov.companieshouse.api.model.accounts.CompanyAccountsApi;
 import uk.gov.companieshouse.document.generator.accounts.AccountType;
 import uk.gov.companieshouse.document.generator.accounts.data.transaction.Transaction;
 import uk.gov.companieshouse.document.generator.accounts.exception.AccountsLinkNotFoundException;
-import uk.gov.companieshouse.document.generator.accounts.exception.ServiceException;
 import uk.gov.companieshouse.document.generator.accounts.service.AccountsService;
+import uk.gov.companieshouse.document.generator.common.exception.ServiceException;
 
 @Component
 public class CompanyAccountsDocumentDataManager {

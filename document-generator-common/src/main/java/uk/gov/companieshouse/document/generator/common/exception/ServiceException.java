@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.document.generator.accounts.exception;
+package uk.gov.companieshouse.document.generator.common.exception;
 
 /**
  * ServiceException is a wrapper exception that hides

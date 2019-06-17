@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.document.generator.accounts.service.impl;
+package uk.gov.companieshouse.document.generator.common.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -6,7 +6,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.http.ApiKeyHttpClient;
 import uk.gov.companieshouse.api.http.HttpClient;
-import uk.gov.companieshouse.document.generator.accounts.service.ApiClientService;
 import uk.gov.companieshouse.environment.EnvironmentReader;
 import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Service
-public class ApiClientServiceImpl implements ApiClientService {
+public class ApiClientService {
 
     private static final EnvironmentReader READER = new EnvironmentReaderImpl();
 
@@ -22,7 +21,6 @@ public class ApiClientServiceImpl implements ApiClientService {
     private static final String apiUrl = READER.getMandatoryString("API_URL");
     private static final String X_REQUEST_ID_HEADER = "x-request-id";
 
-    @Override
     public ApiClient getApiClient() {
         HttpClient httpClient = new ApiKeyHttpClient(chsApiKey);
 
@@ -41,7 +39,7 @@ public class ApiClientServiceImpl implements ApiClientService {
      */
     private static void setRequestId(HttpClient httpClient) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder
-                .currentRequestAttributes();
+            .currentRequestAttributes();
         HttpServletRequest request = attr.getRequest();
 
         String requestId = (String) request.getAttribute(X_REQUEST_ID_HEADER);
