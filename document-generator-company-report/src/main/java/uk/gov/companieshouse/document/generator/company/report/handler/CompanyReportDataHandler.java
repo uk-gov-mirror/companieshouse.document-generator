@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
+import uk.gov.companieshouse.api.handler.charges.request.ChargesGet;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.handler.filinghistory.request.FilingHistoryList;
 import uk.gov.companieshouse.api.handler.officers.request.OfficersList;
+import uk.gov.companieshouse.api.handler.psc.request.PscsList;
 import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
@@ -171,15 +173,27 @@ public class CompanyReportDataHandler {
 
                 else if(pair.getKey() == "charges") {
                     errorString = "charges";
-                    ChargesApi chargesApi = apiClient.charges()
-                        .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/charges").execute().getData();
+
+                    ChargesGet chargesGet = apiClient.charges()
+                            .get(GET_COMPANY_URI.expand(companyNumber).toString() + "/charges");
+
+                    chargesGet.addQueryParams("items_per_page","100");
+
+                    ChargesApi chargesApi = chargesGet.execute().getData();
+
                     companyReportApiData.setChargesApi(chargesApi);
                 }
 
                 else if(pair.getKey() == "persons-with-significant-control") {
                     errorString = "persons-with-significant-control";
-                    PscsApi pscsApi = apiClient.pscs().list(GET_COMPANY_URI.expand(companyNumber).toString() +
-                            "/persons-with-significant-control").execute().getData();
+
+                    PscsList pscsList = apiClient.pscs().list(GET_COMPANY_URI.expand(companyNumber).toString() +
+                            "/persons-with-significant-control");
+
+                    pscsList.addQueryParams("items_per_page","100");
+
+                    PscsApi pscsApi = pscsList.execute().getData();
+                    
                     companyReportApiData.setPscsApi(pscsApi);
                 }
             } catch (ApiErrorResponseException e) {
