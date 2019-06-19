@@ -30,7 +30,7 @@ import uk.gov.companieshouse.document.generator.company.report.exception.Service
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
-import uk.gov.companieshouse.document.generator.company.report.service.ApiClientService;
+import uk.gov.companieshouse.document.generator.company.report.service.CompanyReportApiClientService;
 import uk.gov.companieshouse.document.generator.company.report.service.CompanyService;
 import uk.gov.companieshouse.document.generator.interfaces.model.DocumentInfoResponse;
 import uk.gov.companieshouse.logging.Logger;
@@ -39,8 +39,6 @@ import uk.gov.companieshouse.logging.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,7 +56,7 @@ public class CompanyReportDataHandler {
     private CompanyService companyService;
 
     @Autowired
-    private ApiClientService apiClientService;
+    private CompanyReportApiClientService companyReportApiClientService;
 
     @Autowired
     private CompanyReportMapper companyReportMapper;
@@ -114,7 +112,7 @@ public class CompanyReportDataHandler {
         CompanyProfileApi companyProfileApi = getCompanyProfile(companyNumber);
         companyReportApiData.setCompanyProfileApi(companyProfileApi);
 
-        ApiClient apiClient = apiClientService.getApiClient();
+        ApiClient apiClient = companyReportApiClientService.getApiClient();
 
         String errorString = "company report";
 
@@ -193,7 +191,7 @@ public class CompanyReportDataHandler {
                     pscsList.addQueryParams("items_per_page","100");
 
                     PscsApi pscsApi = pscsList.execute().getData();
-                    
+
                     companyReportApiData.setPscsApi(pscsApi);
                 }
             } catch (ApiErrorResponseException e) {

@@ -16,7 +16,7 @@ import uk.gov.companieshouse.api.model.officers.CompanyOfficerApi;
 import uk.gov.companieshouse.document.generator.company.report.descriptions.RetrieveApiEnumerationDescription;
 import uk.gov.companieshouse.document.generator.company.report.exception.MapperException;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.currentappointments.items.CurrentOfficer;
-import uk.gov.companieshouse.document.generator.company.report.service.ApiClientService;
+import uk.gov.companieshouse.document.generator.company.report.service.CompanyReportApiClientService;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public abstract class ApiToCurrentOfficer {
     private RetrieveApiEnumerationDescription retrieveApiEnumerationDescription;
 
     @Autowired
-    private ApiClientService apiClientService;
+    private CompanyReportApiClientService companyReportApiClientService;
 
     private static final String CONSTANTS = "constants.yml";
 
@@ -54,7 +54,7 @@ public abstract class ApiToCurrentOfficer {
 
         if (hasAppointmentLink(companyOfficerApi)) {
 
-            ApiClient apiClient = apiClientService.getApiClient();
+            ApiClient apiClient = companyReportApiClientService.getApiClient();
             OfficerAppointmentsApi officerAppointmentsApi;
 
             try {
