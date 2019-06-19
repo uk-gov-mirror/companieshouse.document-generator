@@ -39,7 +39,6 @@ public class CompanyServiceImplTest {
     @Mock
     private CompanyGet mockCompanyGet;
 
-
     @Mock
     private ApiResponse<CompanyProfileApi> responseWithData;
 

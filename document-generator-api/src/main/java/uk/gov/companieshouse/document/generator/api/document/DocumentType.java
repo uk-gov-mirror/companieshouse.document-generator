@@ -3,6 +3,7 @@ package uk.gov.companieshouse.document.generator.api.document;
 public enum DocumentType {
 
     ACCOUNTS("/transactions\\/.*\\/(?:company-)?accounts\\/.*"),
+
     PROSECUTION("/prosecution/.*"),
     COMPANY_REPORT("/company-number/.*");
 
