@@ -16,6 +16,7 @@ import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.handler.filinghistory.request.FilingHistoryList;
 import uk.gov.companieshouse.api.handler.officers.request.OfficersList;
 import uk.gov.companieshouse.api.handler.psc.request.PscsList;
+import uk.gov.companieshouse.api.model.charges.ChargeApi;
 import uk.gov.companieshouse.api.model.charges.ChargesApi;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
 import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
@@ -178,6 +179,10 @@ public class CompanyReportDataHandler {
                     chargesGet.addQueryParams("items_per_page","100");
 
                     ChargesApi chargesApi = chargesGet.execute().getData();
+
+                    List<ChargeApi> charges = chargesApi.getItems().stream().collect(Collectors.toList());
+
+                    chargesApi.setItems(charges);
 
                     companyReportApiData.setChargesApi(chargesApi);
                 }
