@@ -18,8 +18,8 @@ import uk.gov.companieshouse.environment.impl.EnvironmentReaderImpl;
 @ComponentScan(basePackages = {"uk.gov.companieshouse.document.generator.accounts",
                                "uk.gov.companieshouse.document.generator.prosecution",
                                "uk.gov.companieshouse.document.generator.company.report",
-                               "uk.gov.companieshouse.document.generator.prosecution",
                                "uk.gov.companieshouse.document.generator.common" })
+
 
 public class DocumentGeneratorApplicationConfiguration {
 
