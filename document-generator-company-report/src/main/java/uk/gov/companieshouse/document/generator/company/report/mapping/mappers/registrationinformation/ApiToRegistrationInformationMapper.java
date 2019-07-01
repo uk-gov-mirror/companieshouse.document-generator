@@ -46,7 +46,8 @@ public abstract class ApiToRegistrationInformationMapper {
             @Mapping(source = "registeredOfficeAddress.poBox", target = "registeredOffice.poBox"),
             @Mapping(source = "registeredOfficeAddress.postalCode", target = "registeredOffice.postalCode"),
             @Mapping(source = "registeredOfficeAddress.premises", target = "registeredOffice.premises"),
-            @Mapping(source = "registeredOfficeAddress.region", target = "registeredOffice.region")
+            @Mapping(source = "registeredOfficeAddress.region", target = "registeredOffice.region"),
+            @Mapping(source = "externalRegistrationNumber", target = "externalRegistrationNumber")
     })
     public abstract RegistrationInformation apiToRegistrationInformation(CompanyProfileApi companyProfileApi) throws IOException;
 
