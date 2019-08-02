@@ -1,10 +1,5 @@
 package uk.gov.companieshouse.document.generator.company.report.handler;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -13,20 +8,26 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.model.company.CompanyProfileApi;
-import uk.gov.companieshouse.api.model.psc.PscsApi;
+import uk.gov.companieshouse.api.model.filinghistory.FilingApi;
+import uk.gov.companieshouse.api.model.filinghistory.FilingHistoryApi;
 import uk.gov.companieshouse.api.model.officers.OfficersApi;
+import uk.gov.companieshouse.api.model.psc.PscsApi;
 import uk.gov.companieshouse.api.model.statements.StatementApi;
 import uk.gov.companieshouse.api.model.statements.StatementsApi;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.CompanyReportMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.CompanyReport;
 import uk.gov.companieshouse.document.generator.company.report.service.CompanyService;
-import uk.gov.companieshouse.document.generator.company.report.service.PscsService;
 import uk.gov.companieshouse.document.generator.company.report.service.OfficerService;
+import uk.gov.companieshouse.document.generator.company.report.service.PscsService;
+import uk.gov.companieshouse.document.generator.company.report.service.RecentFilingHistoryService;
 import uk.gov.companieshouse.document.generator.company.report.service.StatementsService;
 import uk.gov.companieshouse.document.generator.interfaces.model.DocumentInfoResponse;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,21 +57,25 @@ public class CompanyReportDataHandlerTest {
     @Mock
     private OfficerService mockOfficerService;
 
+    @Mock
+    private RecentFilingHistoryService mockRecentFilingHistoryService;
 
     @InjectMocks
     private CompanyReportDataHandler companyReportDataHandler;
 
     private static final String RESOURCE_URI = "/company-number/000064000";
     private static final String REQUEST_ID = "request-id";
+    private static final String FILING_DESCRIPTION = "filing description";
+    private static final String FORM_TYPE = "form type";
 
     @Test
     @DisplayName("Test get company report successful")
     void testGetDocumentInfoSuccessful() throws Exception {
-
         CompanyProfileApi companyProfileApi = createCompanyProfile();
         PscsApi pscsApi = createPscsApi();
         OfficersApi officersApi = createOfficers();
         StatementsApi statementsApi = createStatementsApi();
+        FilingHistoryApi filingHistoryApi = createFilingHistory();
 
         CompanyReportApiData companyReportApiData = new CompanyReportApiData();
         companyReportApiData.setCompanyProfileApi(companyProfileApi);
@@ -79,6 +84,7 @@ public class CompanyReportDataHandlerTest {
         when(mockPscService.getPscs(any(String.class))).thenReturn(pscsApi);
         when(mockOfficerService.getOfficers(any(String.class))).thenReturn(officersApi);
         when(mockStatementsService.getStatements(any(String.class))).thenReturn(statementsApi);
+        when(mockRecentFilingHistoryService.getFilingHistory(any(String.class))).thenReturn(filingHistoryApi);
         when(mockCompanyReportMapper.mapCompanyReport(any(CompanyReportApiData.class))).thenReturn(new CompanyReport());
 
         DocumentInfoResponse documentInfoResponse = companyReportDataHandler.getCompanyReport(RESOURCE_URI, REQUEST_ID);
@@ -124,6 +130,7 @@ public class CompanyReportDataHandlerTest {
         links.put("persons_with_significant_control", "/persons-with-significant-control");
         links.put("officers", "/officers");
         links.put("persons_with_significant_control_statements", "/persons_with_significant_control_statements");
+        links.put("filing_history", "/filing-history");
 
         companyProfileApi.setLinks(links);
 
@@ -149,5 +156,22 @@ public class CompanyReportDataHandlerTest {
         statementsApi.setItems(statementApiList);
 
         return statementsApi;
+    }
+
+    private FilingHistoryApi createFilingHistory(){
+
+        FilingHistoryApi filingHistoryApi = new FilingHistoryApi();
+        List <FilingApi> filingApiList = new ArrayList<>();
+
+        FilingApi filingApi = new FilingApi();
+        filingApi.setDate(LocalDate.of(1999,01,01));
+        filingApi.setDescription(FILING_DESCRIPTION);
+        filingApi.setType(FORM_TYPE);
+
+        filingApiList.add(filingApi);
+
+        filingHistoryApi.setItems(filingApiList);
+
+        return filingHistoryApi;
     }
 }

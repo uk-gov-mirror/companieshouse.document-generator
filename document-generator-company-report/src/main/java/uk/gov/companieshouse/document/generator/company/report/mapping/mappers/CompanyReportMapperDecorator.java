@@ -13,6 +13,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.f
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.keyfilingdates.ApiToKeyFilingDatesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.previousnames.ApiToPreviousNamesMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.pscs.ApiToPscsMapper;
+import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.recentfilinghistory.ApiToRecentFilingHistoryMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.registrationinformation.ApiToRegistrationInformationMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.mappers.statements.ApiToPscStatementsMapper;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.CompanyReportApiData;
@@ -54,6 +55,7 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
     @Autowired
     private ApiToPscStatementsMapper apiToPscStatementsMapper;
 
+    private ApiToRecentFilingHistoryMapper apiToRecentFilingHistoryMapper;
 
     @Override
     public CompanyReport mapCompanyReport(CompanyReportApiData companyReportApiData) {
@@ -73,6 +75,10 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
 
             if (companyReportApiData.getCompanyProfileApi().getAccounts() != null) {
                 companyReport.setKeyFilingDates(setKeyFilingDates(companyReportApiData.getCompanyProfileApi()));
+            }
+
+            if (companyReportApiData.getFilingHistoryApi() !=null) {
+                companyReport.setRecentFilingHistory(apiToRecentFilingHistoryMapper.apiToRecentFilingHistoryMapper(companyReportApiData.getFilingHistoryApi().getItems()));
             }
 
             if(companyReportApiData.getPscsApi() != null) {
@@ -101,7 +107,7 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
     }
 
     private CurrentAppointments setCurrentAppointments(OfficersApi officersApi) {
-            return apiToCurrentAppointmentsMapper.apiToCurrentAppointmentsMapper(officersApi);
+        return apiToCurrentAppointmentsMapper.apiToCurrentAppointmentsMapper(officersApi);
     }
 
     private KeyFilingDates setKeyFilingDates(CompanyProfileApi companyProfileApi) {
