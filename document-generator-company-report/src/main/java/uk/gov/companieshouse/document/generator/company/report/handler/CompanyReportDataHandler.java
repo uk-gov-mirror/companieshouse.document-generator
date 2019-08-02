@@ -133,7 +133,7 @@ public class CompanyReportDataHandler {
         }
 
         return toJson(companyReportMapper
-            .mapCompanyReport(companyReportApiData),
+            .mapCompanyReport(companyReportApiData, requestId, companyNumber),
             companyNumber,
             requestId,
             timeStamp);
