@@ -63,6 +63,7 @@ public class CompanyReportMapperDecorator implements CompanyReportMapper {
     @Autowired
     private ApiToPscStatementsMapper apiToPscStatementsMapper;
 
+    @Autowired
     private ApiToRecentFilingHistoryMapper apiToRecentFilingHistoryMapper;
 
     private static final Logger LOG = LoggerFactory.getLogger(MODULE_NAME_SPACE);
