@@ -13,6 +13,7 @@ import uk.gov.companieshouse.document.generator.company.report.mapping.model.doc
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.previousnames.PreviousNames;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.pscs.Pscs;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.recentfilinghistory.RecentFilingHistory;
+import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registers.CompanyRegisters;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.registrationinformation.RegistrationInformation;
 import uk.gov.companieshouse.document.generator.company.report.mapping.model.document.items.statements.Statements;
 
@@ -49,6 +50,9 @@ public class CompanyReport {
 
     @JsonProperty("psc_statements")
     private Statements statements;
+
+    @JsonProperty("registers")
+    private CompanyRegisters registers;
 
     public String getTimeStampCreated() {
         return TimeStampCreated;
@@ -120,5 +124,13 @@ public class CompanyReport {
 
     public void setStatements(Statements statements) {
         this.statements = statements;
+    }
+
+    public CompanyRegisters getRegisters() {
+        return registers;
+    }
+
+    public void setRegisters(CompanyRegisters registers) {
+        this.registers = registers;
     }
 }
